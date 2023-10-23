@@ -2,6 +2,7 @@ package com.example.novelisland.service;
 
 import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.UserDTO;
+import com.example.novelisland.exception.user.NotExistUserException;
 import com.example.novelisland.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -43,8 +45,8 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("유저 정보 수정 테스트")
-    void testUpdateUser() {
+    @DisplayName("유저 정보 수정 테스트 성공")
+    void testUpdateUser_성공() {
         log.info("유저 정보 수정 테스트 시작");
 
         // given
@@ -61,8 +63,25 @@ class UserServiceTest {
     }
 
     @Test
-    @DisplayName("유저 삭제 테스트")
-    void testDeleteUser() {
+    @DisplayName("유저 정보 수정 테스트 실패")
+    void testUpdateUser_실패() {
+        log.info("유저 정보 수정 테스트 시작");
+
+        // given
+        when(userRepository.existsByUserIndex(userDTO.getUserIndex())).thenReturn(false);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> userService.updateUser(userDTO))
+                .isInstanceOf(NotExistUserException.class);
+
+        log.info("유저 정보 수정 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("유저 삭제 테스트 성공")
+    void testDeleteUser_성공() {
         log.info("유저 삭제 테스트 시작");
 
         // given
@@ -79,4 +98,20 @@ class UserServiceTest {
         log.info("유저 삭제 테스트 종료");
     }
 
+    @Test
+    @DisplayName("유저 삭제 테스트 실패")
+    void testDeleteUser_실패() {
+        log.info("유저 삭제 테스트 시작");
+
+        // given
+        when(userRepository.existsByUserIndex(userDTO.getUserIndex())).thenReturn(false); // 해당 유저가 존재한다고 가정
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> userService.deleteUser(userDTO.getUserIndex()))
+                .isInstanceOf(NotExistUserException.class);
+
+        log.info("유저 삭제 테스트 종료");
+    }
 }
