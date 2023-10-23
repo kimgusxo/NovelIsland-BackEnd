@@ -38,8 +38,8 @@ class TagTest {
     }
 
     @Test
-    @DisplayName("태그 아이디로 소설 리스트 검색 테스트")
-    void testGetNovelsByTagId() {
+    @DisplayName("태그 아이디로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByTagId_성공() {
         log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
 
         Long tagId = 4764L;
@@ -56,12 +56,34 @@ class TagTest {
         assert message != null;
         System.out.println(message.getMessage());
 
-        log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
+        log.info("태그 아이디로 소설 리스트 검색 테스트 종료");
     }
 
     @Test
-    @DisplayName("태그 이름으로 소설 리스트 검색 테스트")
-    void testGetNovelsByTagName() {
+    @DisplayName("태그 아이디로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByTagId_실패() {
+        log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
+
+        Long tagId = 1L;
+
+        ResponseEntity<Message> response = restTemplate.getForEntity(
+                createURLWithPort("/tag/find/tagId?tagId=" + tagId + "&page=" + page + "&size=" + size),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("태그 아이디로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 이름으로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByTagName_성공() {
         log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
 
         String tagClassification = "판타지";
@@ -78,7 +100,29 @@ class TagTest {
         assert message != null;
         System.out.println(message.getMessage());
 
+        log.info("태그 이름으로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 이름으로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByTagName_실패() {
         log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
+
+        String tagClassification = "틀린태그";
+
+        ResponseEntity<Message> response = restTemplate.getForEntity(
+                createURLWithPort("/tag/find/tagClassification?tagClassification=" + tagClassification + "&page=" + page + "&size=" + size),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("태그 이름으로 소설 리스트 검색 테스트 종료");
     }
 
     private String createURLWithPort(String uri) {

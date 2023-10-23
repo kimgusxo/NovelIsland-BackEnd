@@ -53,8 +53,8 @@ class UserTest {
     }
 
     @Test
-    @DisplayName("유저 업데이트 테스트")
-    void testUpdateUser() {
+    @DisplayName("유저 업데이트 테스트 성공")
+    void testUpdateUser_성공() {
         log.info("유저 업데이트 테스트 시작");
 
         UserDTO userDTO = new UserDTO(16945L, "Test2", "updatePassword");
@@ -80,10 +80,39 @@ class UserTest {
 
         log.info("유저 업데이트 테스트 종료");
     }
+    
+    @Test
+    @DisplayName("유저 업데이트 테스트 실패")
+    void testUpdateUser_실패() {
+        log.info("유저 업데이트 테스트 시작");
+
+        UserDTO userDTO = new UserDTO(1L, "Test2", "updatePassword");
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+
+        ResponseEntity<Message> response = restTemplate.exchange(
+                createURLWithPort("/user/update"),
+                HttpMethod.PUT,
+                new HttpEntity<>(userDTO),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("유저 업데이트 테스트 종료");
+    }
 
     @Test
-    @DisplayName("유저 삭제 테스트")
-    void testDeleteUser() {
+    @DisplayName("유저 삭제 테스트 성공")
+    void testDeleteUser_성공() {
         log.info("유저 삭제 테스트 시작");
 
         Long userIndex = 16978L;
@@ -101,6 +130,35 @@ class UserTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("유저 삭제 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("유저 삭제 테스트 실패")
+    void testDeleteUser_실패() {
+        log.info("유저 삭제 테스트 시작");
+
+        Long userIndex = 1L;
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", "Bearer " + jwt);
+        HttpEntity<String> entity = new HttpEntity<>(null, headers);
+
+
+        ResponseEntity<Message> response = restTemplate.exchange(
+                createURLWithPort("/user/delete?userIndex=" + userIndex),
+                HttpMethod.DELETE,
+                null,
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         Message message = response.getBody();
 

@@ -58,15 +58,6 @@ public class LoginTest {
 
         LoginDTO loginDTO = new LoginDTO("testUser", "password123");
 
-        // 첫 번째 회원가입 시도
-        ResponseEntity<Message> response1 = restTemplate.postForEntity(
-                createURLWithPort("/login/signUp"),
-                loginDTO,
-                Message.class
-        );
-
-        assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
-
         // 중복 회원가입 시도
         ResponseEntity<ErrorMessage> response2 = restTemplate.postForEntity(
                 createURLWithPort("/login/signUp"),

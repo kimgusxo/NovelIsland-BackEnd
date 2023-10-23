@@ -43,8 +43,8 @@ class NovelTest {
     }
 
     @Test
-    @DisplayName("소설 아이디로 소설 검색 테스트")
-    void testGetNovelByNovelId() {
+    @DisplayName("소설 아이디로 소설 검색 테스트 성공")
+    void testGetNovelByNovelId_성공() {
         log.info("소설 아이디로 소설 검색 테스트 시작");
 
         Long novelId = 4773L;
@@ -65,8 +65,30 @@ class NovelTest {
     }
 
     @Test
-    @DisplayName("소설 이름으로 소설 리스트 검색 테스트")
-    void testGetNovelsByNovelName() {
+    @DisplayName("소설 아이디로 소설 검색 테스트 실패")
+    void testGetNovelByNovelId_실패() {
+        log.info("소설 아이디로 소설 검색 테스트 시작");
+
+        Long novelId = 1L;
+
+        ResponseEntity<Message> response = restTemplate.getForEntity(
+                createURLWithPort("/novel/find/novelId?novelId=" + novelId),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("소설 아이디로 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("소설 이름으로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByNovelName_성공() {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
 
         String novelName = "화산";
@@ -87,8 +109,30 @@ class NovelTest {
     }
 
     @Test
-    @DisplayName("소설 이름과 태그 리스트로 소설 리스트 검색 테스트")
-    void testGetNovelsByNovelNameContainingAndTagIdList() {
+    @DisplayName("소설 이름으로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByNovelName_실패() {
+        log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
+
+        String novelName = "테스트입니다";
+
+        ResponseEntity<Message> response = restTemplate.getForEntity(
+                createURLWithPort("/novel/find/novelName?novelName=" + novelName + "&page=" + page + "&size=" + size),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("소설 이름으로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByNovelNameContainingAndTagIdList_성공() {
         log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 시작");
 
         String novelName = "가";
@@ -103,6 +147,32 @@ class NovelTest {
         );
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        Message message = response.getBody();
+
+        assert message != null;
+        System.out.println(message.getMessage());
+
+        log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByNovelNameContainingAndTagIdList_실패() {
+        log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 시작");
+
+        String novelName = "가";
+        List<Long> tagIdList = List.of(1L, 2L);
+
+        SearchDTO searchDTO = new SearchDTO(novelName, tagIdList);
+
+        ResponseEntity<Message> response = restTemplate.getForEntity(
+                createURLWithPort("/novel/find/novelName/and/tagId?novelName=" + searchDTO.getNovelName() +
+                        "&tagIdList=" + searchDTO.getTagIdList().stream().map(Objects::toString).collect(Collectors.joining(",")) + "&page=" + page + "&size=" + size),
+                Message.class
+        );
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
 
         Message message = response.getBody();
 
