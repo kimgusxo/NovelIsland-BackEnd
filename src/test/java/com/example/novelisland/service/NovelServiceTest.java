@@ -76,7 +76,7 @@ class NovelServiceTest {
 
     @Test
     @DisplayName("소설 아이디로 소설 검색 테스트 성공")
-    void getNovelByNovelId_성공() {
+    void testGetNovelByNovelId_성공() {
         log.info("소설 아이디로 소설 검색 테스트 시작");
 
         // given
@@ -94,7 +94,7 @@ class NovelServiceTest {
 
     @Test
     @DisplayName("소설 아이디로 소설 검색 테스트 실패")
-    void getNovelByNovelId_실패() {
+    void testGetNovelByNovelId_실패() {
         log.info("소설 아이디로 소설 검색 테스트 시작");
 
         // given
@@ -111,7 +111,7 @@ class NovelServiceTest {
 
     @Test
     @DisplayName("소설 이름으로 소설 리스트 검색 테스트 성공")
-    void getNovelsByNovelName_성공() {
+    void testGetNovelsByNovelName_성공() {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
 
         // given
@@ -131,7 +131,7 @@ class NovelServiceTest {
 
     @Test
     @DisplayName("소설 이름으로 소설 리스트 검색 테스트 실패")
-    void getNovelsByNovelName_실패() {
+    void testGetNovelsByNovelName_실패() {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
 
         // given

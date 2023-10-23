@@ -55,7 +55,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("태그 아이디로 소설 리스트 검색 테스트 성공")
-    void getNovelsByTagId_성공() {
+    void testGetNovelsByTagId_성공() {
         log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
 
         // given
@@ -74,7 +74,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("태그 아이디로 소설 리스트 검색 테스트 실패")
-    void getNovelsByTagId_실패() {
+    void testGetNovelsByTagId_실패() {
         log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
 
         // given
@@ -92,7 +92,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("태그 이름으로 소설 리스트 검색 테스트 성공")
-    void getNovelsByTagClassification_성공() {
+    void testGetNovelsByTagClassification_성공() {
         log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
 
         // given
@@ -112,7 +112,7 @@ class TagServiceTest {
 
     @Test
     @DisplayName("태그 이름으로 소설 리스트 검색 테스트 실패")
-    void getNovelsByTagClassification_실패() {
+    void testGetNovelsByTagClassification_실패() {
         log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
 
         // given

@@ -52,7 +52,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("작가 아이디로 작가 검색 테스트 성공")
-    void getAuthorByAuthorId_성공() {
+    void testGetAuthorByAuthorId_성공() {
         log.info("작가 아이디로 작가 검색 테스트 시작");
 
         // given
@@ -70,7 +70,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("작가 아이디로 작가 검색 테스트 실패")
-    void getAuthorByAuthorId_실패() {
+    void testGetAuthorByAuthorId_실패() {
         log.info("작가 아이디로 작가 검색 테스트 시작");
 
         // given
@@ -88,7 +88,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("작가 이름으로 작가 검색 테스트 성공")
-    void getAuthorByAuthorName_성공() {
+    void testGetAuthorByAuthorName_성공() {
         log.info("작가 이름으로 작가 검색 테스트 시작");
 
         // given
@@ -106,7 +106,7 @@ class AuthorServiceTest {
 
     @Test
     @DisplayName("작가 이름으로 작가 검색 테스트 실패")
-    void getAuthorByAuthorName_실패() {
+    void testGetAuthorByAuthorName_실패() {
         log.info("작가 이름으로 작가 검색 테스트 시작");
 
         // given

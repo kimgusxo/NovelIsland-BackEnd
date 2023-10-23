@@ -51,7 +51,7 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("새로운 사용자로 회원가입 테스트")
-    void signUp_새로운사용자() {
+    void testSignUp_새로운사용자() {
         log.info("새로운 사용자로 회원가입 테스트 시작");
 
         // given
@@ -77,7 +77,7 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("중복된 사용자로 회원가입 테스트")
-    void signUp_중복사용자() {
+    void testSignUp_중복사용자() {
         log.info("중복된 사용자로 회원가입 테스트 시작");
 
         // given
@@ -94,7 +94,7 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("로그인 테스트 성공")
-    void signIn_성공() {
+    void testSignIn_성공() {
         log.info("로그인 테스트 시작");
 
         // given
@@ -121,7 +121,7 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("잘못된 아이디로 로그인 테스트")
-    void signIn_잘못된아이디() {
+    void testSignIn_잘못된아이디() {
         log.info("잘못된 아이디로 로그인 테스트 시작");
 
         // given
@@ -136,7 +136,7 @@ class LoginServiceTest {
 
     @Test
     @DisplayName("잘못된 비밀번호로 로그인 테스트")
-    void signIn_잘못된비밀번호() {
+    void testSignIn_잘못된비밀번호() {
         log.info("잘못된 비밀번호로 로그인 테스트 시작");
 
         // given

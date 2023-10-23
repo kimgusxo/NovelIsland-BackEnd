@@ -119,7 +119,7 @@ class LoginControllerTest {
 
     @Test
     @DisplayName("잘못된 비밀번호로 로그인 테스트")
-    void testSingIn() throws Exception {
+    void testSingIn_잘못된비밀번호() throws Exception {
         log.info("잘못된 비밀번호로 로그인 테스트 시작");
 
         // given

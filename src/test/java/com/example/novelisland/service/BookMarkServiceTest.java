@@ -70,7 +70,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("유저 인덱스로 유저의 북마크 검색 테스트 성공")
-    void getBookMarkListByUserIndex_성공() {
+    void testGetBookMarkListByUserIndex_성공() {
         log.info("유저 인덱스로 유저의 북마크 검색 테스트 시작");
 
         // given
@@ -90,7 +90,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("유저 인덱스로 유저의 북마크 검색 테스트 실패")
-    void getBookMarkListByUserIndex_실패() {
+    void testGetBookMarkListByUserIndex_실패() {
         log.info("유저 인덱스로 유저의 북마크 검색 테스트 시작");
 
         // given
@@ -107,7 +107,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("유저 인덱스로 유저의 북마크 생성 테스트 성공")
-    void createBookMarkByUserIndex_성공() {
+    void testCreateBookMarkByUserIndex_성공() {
         log.info("유저 인덱스로 유저의 북마크 생성 테스트 시작");
 
         // given
@@ -126,7 +126,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("유저 인덱스로 유저의 북마크 생성 테스트 실패")
-    void createBookMarkByUserIndex_실패() {
+    void testCreateBookMarkByUserIndex_실패() {
         log.info("유저 인덱스로 유저의 북마크 생성 테스트 시작");
 
         // given
@@ -144,7 +144,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("북마크 인덱스로 유저의 북마크 삭제 테스트 성공")
-    void deleteBookMarkByBookMarkIndex_성공() {
+    void testDeleteBookMarkByBookMarkIndex_성공() {
         log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 시작");
 
         // given
@@ -162,7 +162,7 @@ class BookMarkServiceTest {
 
     @Test
     @DisplayName("북마크 인덱스로 유저의 북마크 삭제 테스트 성공")
-    void deleteBookMarkByBookMarkIndex_실패() {
+    void testDeleteBookMarkByBookMarkIndex_실패() {
         log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 시작");
 
         // given

@@ -44,7 +44,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("유저 정보 수정 테스트")
-    void updateUser() {
+    void testUpdateUser() {
         log.info("유저 정보 수정 테스트 시작");
 
         // given
@@ -62,7 +62,7 @@ class UserServiceTest {
 
     @Test
     @DisplayName("유저 삭제 테스트")
-    void deleteUser() {
+    void testDeleteUser() {
         log.info("유저 삭제 테스트 시작");
 
         // given
