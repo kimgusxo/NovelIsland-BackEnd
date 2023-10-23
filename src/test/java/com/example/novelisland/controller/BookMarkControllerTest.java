@@ -2,6 +2,7 @@ package com.example.novelisland.controller;
 
 import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.dto.BookMarkDTO;
+import com.example.novelisland.exception.bookmark.AlreadyExistBookMarkException;
 import com.example.novelisland.exception.bookmark.NotExistBookMarkException;
 import com.example.novelisland.service.BookMarkService;
 import lombok.extern.slf4j.Slf4j;
@@ -86,8 +87,8 @@ class BookMarkControllerTest {
     }
 
     @Test
-    @DisplayName("유저의 북마크 등록 테스트")
-    void testCreateBookMarkByBookMarkId() throws Exception {
+    @DisplayName("유저의 북마크 등록 테스트 성공")
+    void testCreateBookMarkByBookMarkId_성공() throws Exception {
         log.info("유저의 북마크 등록 테스트 시작");
 
         // given
@@ -103,6 +104,28 @@ class BookMarkControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"userindex\":\"1\",\"novelid\":\"1\"}"))
                 .andExpect(status().isOk());
+
+        log.info("유저의 북마크 등록 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("유저의 북마크 등록 테스트 실패")
+    void testCreateBookMarkByBookMarkId_실패() throws Exception {
+        log.info("유저의 북마크 등록 테스트 시작");
+
+        // given
+        Long userIndex = 1L;
+        Long novelId = 1L;
+
+        given(bookMarkService.createBookMarkByUserIndex(userIndex, novelId)).willThrow(new AlreadyExistBookMarkException(ErrorCode.AlREADY_EXIST_BOOKMARK_TOKEN));
+
+        // when & then
+        mockMvc.perform(post("/bookmark/create/userIndex/and/novelId")
+                        .param("userIndex", "1")
+                        .param("novelId", "1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"userindex\":\"1\",\"novelid\":\"1\"}"))
+                .andExpect(status().isBadRequest());
 
         log.info("유저의 북마크 등록 테스트 종료");
     }

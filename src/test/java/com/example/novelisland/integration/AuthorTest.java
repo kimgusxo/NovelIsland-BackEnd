@@ -25,7 +25,7 @@ class AuthorTest {
     private TestRestTemplate restTemplate;
 
     @Test
-    @DisplayName("작가 아이디로 작가 검색 테스트")
+    @DisplayName("작가 아이디로 작가 검색 테스트 성공")
     void testGetAuthorByAuthorId_성공() {
         log.info("작가 아이디로 작가 검색 테스트 시작");
 
@@ -69,7 +69,7 @@ class AuthorTest {
     }
 
     @Test
-    @DisplayName("작가 이름으로 작가 검색 테스트 테스트")
+    @DisplayName("작가 이름으로 작가 검색 테스트 테스트 성공")
     void testGetAuthorByAuthorName_성공() {
         log.info("작가 이름으로 작가 검색 테스트 시작");
 
