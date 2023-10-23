@@ -25,6 +25,7 @@ public enum ErrorCode {
     NOT_VALIDATION_TOKEN(HttpStatus.BAD_REQUEST, "값이 없으면 안됩니다.");
     
     // 500번대: 서버 측 부하 및 DB 관련 문제, 서버 에러
+
     private final HttpStatus httpStatus;
     private final String detail;
 

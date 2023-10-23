@@ -4,6 +4,7 @@ import com.example.novelisland.domain.BookMark;
 import com.example.novelisland.domain.Novel;
 import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.BookMarkDTO;
+import com.example.novelisland.exception.bookmark.AlreadyExistBookMarkException;
 import com.example.novelisland.exception.bookmark.NotExistBookMarkException;
 import com.example.novelisland.repository.BookMarkRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -105,11 +106,13 @@ class BookMarkServiceTest {
     }
 
     @Test
-    @DisplayName("유저 인덱스로 유저의 북마크 생성 테스트")
-    void createBookMarkByUserIndex() {
+    @DisplayName("유저 인덱스로 유저의 북마크 생성 테스트 성공")
+    void createBookMarkByUserIndex_성공() {
         log.info("유저 인덱스로 유저의 북마크 생성 테스트 시작");
 
         // given
+        when(bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(bookMark.getUser().getUserIndex(), bookMark.getNovel().getNovelId()))
+                .thenReturn(true);
         when(bookMarkRepository.save(any(BookMark.class))).thenReturn(bookMark);
 
         // when
@@ -122,11 +125,30 @@ class BookMarkServiceTest {
     }
 
     @Test
+    @DisplayName("유저 인덱스로 유저의 북마크 생성 테스트 실패")
+    void createBookMarkByUserIndex_실패() {
+        log.info("유저 인덱스로 유저의 북마크 생성 테스트 시작");
+
+        // given
+        when(bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(bookMark.getUser().getUserIndex(), bookMark.getNovel().getNovelId()))
+                .thenReturn(false);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> bookMarkService.createBookMarkByUserIndex(bookMark.getUser().getUserIndex(), bookMark.getNovel().getNovelId()))
+                .isInstanceOf(AlreadyExistBookMarkException.class);
+
+        log.info("유저 인덱스로 유저의 북마크 생성 테스트 종료");
+    }
+
+    @Test
     @DisplayName("북마크 인덱스로 유저의 북마크 삭제 테스트 성공")
-    void deleteBookMarkByBookMarkIndex() {
+    void deleteBookMarkByBookMarkIndex_성공() {
         log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 시작");
 
         // given
+        when(bookMarkRepository.existsByBookMarkId(bookMark.getBookMarkId())).thenReturn(true);
         doNothing().when(bookMarkRepository).deleteByBookMarkId(bookMark.getBookMarkId());
 
         // when
@@ -137,5 +159,23 @@ class BookMarkServiceTest {
 
         log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 종료");
     }
+
+    @Test
+    @DisplayName("북마크 인덱스로 유저의 북마크 삭제 테스트 성공")
+    void deleteBookMarkByBookMarkIndex_실패() {
+        log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 시작");
+
+        // given
+        when(bookMarkRepository.existsByBookMarkId(bookMark.getBookMarkId())).thenReturn(false);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> bookMarkService.deleteBookMarkByBookMarkId(bookMark.getBookMarkId()))
+                .isInstanceOf(NotExistBookMarkException.class);
+
+        log.info("북마크 인덱스로 유저의 북마크 삭제 테스트 종료");
+    }
+
 
 }

@@ -4,6 +4,7 @@ import com.example.novelisland.domain.Author;
 import com.example.novelisland.domain.Novel;
 import com.example.novelisland.domain.Tag;
 import com.example.novelisland.dto.NovelSummaryDTO;
+import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.projection.NovelSummary;
 import com.example.novelisland.repository.TagRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -52,12 +54,13 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("태그 아이디로 소설 리스트 검색 테스트")
-    void getNovelsByTagId() {
+    @DisplayName("태그 아이디로 소설 리스트 검색 테스트 성공")
+    void getNovelsByTagId_성공() {
         log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
 
         // given
         Long tagId = 1L;
+        when(tagRepository.existsByTagId(tagId)).thenReturn(true);
         when(tagRepository.findNovelsByTagId(tagId, pageable)).thenReturn(new ArrayList<>());
 
         // when
@@ -70,13 +73,32 @@ class TagServiceTest {
     }
 
     @Test
-    @DisplayName("태그 이름으로 소설 리스트 검색 테스트")
-    void getNovelsByTagClassification() {
+    @DisplayName("태그 아이디로 소설 리스트 검색 테스트 실패")
+    void getNovelsByTagId_실패() {
+        log.info("태그 아이디로 소설 리스트 검색 테스트 시작");
+
+        // given
+        Long tagId = 1L;
+        when(tagRepository.existsByTagId(tagId)).thenReturn(false);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> tagService.getNovelsByTagId(tagId, page, size))
+                .isInstanceOf(NotExistNovelException.class);
+
+        log.info("태그 아이디로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 이름으로 소설 리스트 검색 테스트 성공")
+    void getNovelsByTagClassification_성공() {
         log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
 
         // given
         String tagClassification = "판타지";
 
+        when(tagRepository.existsByTagClassification(tagClassification)).thenReturn(true);
         when(tagRepository.findNovelsByTagClassification(tagClassification, pageable)).thenReturn(new ArrayList<>());
 
         // when
@@ -84,6 +106,25 @@ class TagServiceTest {
 
         // then
         assertThat(novelSummaryDTOList).isNotNull();
+
+        log.info("태그 이름으로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 이름으로 소설 리스트 검색 테스트 실패")
+    void getNovelsByTagClassification_실패() {
+        log.info("태그 이름으로 소설 리스트 검색 테스트 시작");
+
+        // given
+        String tagClassification = "판타지";
+
+        when(tagRepository.existsByTagClassification(tagClassification)).thenReturn(false);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> tagService.getNovelsByTagClassification(tagClassification, page, size))
+                .isInstanceOf(NotExistNovelException.class);
 
         log.info("태그 이름으로 소설 리스트 검색 테스트 종료");
     }
