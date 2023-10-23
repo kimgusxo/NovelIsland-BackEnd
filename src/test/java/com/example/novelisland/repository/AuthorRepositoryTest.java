@@ -25,8 +25,8 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    @DisplayName("작가 존재여부 찾기")
-    void existsAuthorById() {
+    @DisplayName("작가 존재여부 찾기 테스트")
+    void testExistsAuthorById() {
         log.info("작가 존재여부 찾기 테스트 시작");
 
         // given
@@ -44,8 +44,8 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    @DisplayName("작가 이름 존재여부 찾기")
-    void existsAuthorByName() {
+    @DisplayName("작가 이름 존재여부 찾기 테스트")
+    void testExistsAuthorByName() {
         log.info("작가 이름 존재여부 찾기 테스트 시작");
         
         // given
@@ -63,59 +63,52 @@ class AuthorRepositoryTest {
     }
 
     @Test
-    @DisplayName("작가 아이디로 작가 검색")
-    void findAuthorById() {
+    @DisplayName("작가 아이디로 작가 검색 테스트")
+    void testFindAuthorById() {
         log.info("작가 아이디로 작가 검색 테스트 시작");
 
         // given
         Long authorId = 1L;
 
         // when
-        Boolean token = authorRepository.existsByAuthorId(authorId);
+        Author author = authorRepository.findByAuthorId(authorId);
 
         // then
-        if(token) {
-            Author author = authorRepository.findByAuthorId(authorId);
+        assertThat(author)
+                .as("작가가 존재하지 않습니다.")
+                .isNotNull();
 
-            System.out.println("작가 인덱스: " + author.getAuthorId());
-            System.out.println("작가 이름: " + author.getAuthorName());
+        System.out.println("작가 인덱스: " + author.getAuthorId());
+        System.out.println("작가 이름: " + author.getAuthorName());
 
-            author.getNovelList()
-                    .stream().forEach(n ->
-                            System.out.println("소설 이름: " + n.getNovelName()));
+        author.getNovelList().forEach(n ->
+                System.out.println("소설 이름: " + n.getNovelName()));
 
-            log.info("작가 아이디로 작가 검색 테스트 종료");
-        } else {
-            fail("작가가 존재하지 않습니다.");
-        }
+        log.info("작가 아이디로 작가 검색 테스트 종료");
     }
 
     @Test
-    @DisplayName("작가 이름으로 작가 검색")
-    void findAuthorByName() {
+    @DisplayName("작가 이름으로 작가 검색 테스트")
+    void testFindAuthorByName() {
         log.info("작가 이름으로 작가 검색 테스트 시작");
         
         // given
         String authorName = "윤이수";
 
         // when
-        Boolean token = authorRepository.existsByAuthorName(authorName);
+        Author author = authorRepository.findByAuthorName(authorName);
 
         // then
-        if(token) {
-            Author author = authorRepository.findByAuthorName(authorName);
+        assertThat(author)
+                .as("작가가 존재하지 않습니다.")
+                .isNotNull();
 
-            System.out.println("작가 인덱스: " + author.getAuthorId());
-            System.out.println("작가 이름: " + author.getAuthorName());
+        System.out.println("작가 인덱스: " + author.getAuthorId());
+        System.out.println("작가 이름: " + author.getAuthorName());
 
-            author.getNovelList()
-                    .stream().forEach(n ->
-                            System.out.println(
-                                    "소설 이름: " + n.getNovelName()));
-
-            log.info("작가 이름으로 작가 검색 테스트 종료");
-        } else {
-            fail("작가가 존재하지 않습니다.");
-        }
+        author.getNovelList().forEach(n ->
+                System.out.println(
+                        "소설 이름: " + n.getNovelName()));
+        log.info("작가 이름으로 작가 검색 테스트 종료");
     }
 }

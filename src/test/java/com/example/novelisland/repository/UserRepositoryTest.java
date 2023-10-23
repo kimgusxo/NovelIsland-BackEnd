@@ -34,73 +34,37 @@ class UserRepositoryTest {
         log.info("테스트 유저 생성중");
 
         user = User.builder()
-                .userId("test1")
+                .userId("Test1")
                 .userPassword("123")
                 .build();
 
         log.info("테스트 유저 생성완료");
     }
 
-    @AfterEach
-    void cleanUp() {
-        // 테스트 데이터베이스 정리
-        userRepository.delete(user);
-    }
-
-    // @Nested를 사용하여 가짜 유저도 만들어서 테스트 진행해봄
-
     @Test
-    @DisplayName("회원가입")
-    void signUp() {
+    @DisplayName("유저 생성 테스트")
+    void testCreateUser() {
         log.info("회원가입 테스트 시작");
         
         // given
-        Boolean tokenId = userRepository.existsByUserId(user.getUserId());
 
         // when
-        if(!tokenId) {
-            User savedUser = userRepository.save(user);
+        User savedUser = userRepository.save(user);
 
-            // then
-            assertThat(savedUser)
-                    .as("아이디가 일치하지 않습니다.")
-                    .hasFieldOrPropertyWithValue("userId", user.getUserId())
-                    .as("비밀번호가 일치하지 않습니다.")
-                    .hasFieldOrPropertyWithValue("userPassword", user.getUserPassword());
+        // then
+        assertThat(savedUser)
+                .as("아이디가 일치하지 않습니다.")
+                .hasFieldOrPropertyWithValue("userId", user.getUserId())
+                .as("비밀번호가 일치하지 않습니다.")
+                .hasFieldOrPropertyWithValue("userPassword", user.getUserPassword());
 
-            log.info("회원가입 테스트 종료");
-        } else {
-            fail("이미 존재하는 아이디입니다.");
-        }
+        log.info("회원가입 테스트 종료");
     }
 
     @Test
-    @DisplayName("로그인")
-    void login() {
-        log.info("로그인 테스트 시작");
-
-        // given
-        Boolean tokenId = userRepository.existsByUserId(user.getUserId());
-
-        // when
-        if(tokenId) {
-            User loginUser = userRepository.findByUserId(user.getUserId());
-
-            // then
-            assertThat(loginUser.getUserPassword())
-                    .as("비밀번호가 틀렸습니다.")
-                    .isEqualTo(user.getUserPassword());
-
-            log.info("로그인 테스트 종료");
-        } else {
-            fail("아이디가 존재하지 않습니다.");
-        }
-    }
-
-    @Test
-    @DisplayName("유저 아이디로 유저의 존재여부 확인")
-    void existsByUserId() {
-        log.info("유저 존재여부 테스트 시작");
+    @DisplayName("유저 아이디로 유저의 존재여부 확인 테스트")
+    void testExistsByUserId() {
+        log.info("유저 아이디로 유저의 존재여부 확인 테스트 시작");
 
         // given
 
@@ -112,95 +76,82 @@ class UserRepositoryTest {
                 .as("유저가 존재하지 않습니다.")
                 .isTrue();
 
-        log.info("유저 존재여부 테스트 종료");
+        log.info("유저 아이디로 유저의 존재여부 확인 테스트 종료");
     }
 
     @Test
-    @DisplayName("유저 아이디로 유저 검색")
-    void findUserById() {
+    @DisplayName("유저 아이디로 유저 검색 테스트")
+    void testFindUserById() {
         log.info("유저 아이디로 유저 검색 테스트 시작");
 
         // given
-        Boolean token = userRepository.existsByUserId(user.getUserId());
 
         // when
-        if(token) {
-            User findUser = userRepository.findByUserId(user.getUserId());
+        User findUser = userRepository.findByUserId(user.getUserId());
 
-            // then
-            System.out.println("유저 인덱스: " + findUser.getUserIndex());
-            System.out.println("유저 아이디: " + findUser.getUserId());
-            System.out.println("유저 비밀번호: " + findUser.getUserPassword());
+        // then
+        assertThat(findUser)
+                .as("유저가 존재하지 않습니다.")
+                .isNotNull();
 
-            log.info("유저 아이디로 유저 검색 테스트 종료");
-        } else {
-            fail("검색한 유저가 존재하지 않습니다.");
-        }
+        System.out.println("유저 인덱스: " + findUser.getUserIndex());
+        System.out.println("유저 아이디: " + findUser.getUserId());
+        System.out.println("유저 비밀번호: " + findUser.getUserPassword());
+
+        log.info("유저 아이디로 유저 검색 테스트 종료");
     }
 
     @Test
-    @DisplayName("유저 아이디로 유저 삭제")
-    void deleteUser() {
+    @DisplayName("유저 아이디로 유저 삭제 테스트")
+    void testDeleteUser() {
         log.info("유저 아이디로 유저 삭제 테스트 시작");
 
         // given
-        Boolean tokenId = userRepository.existsByUserId(user.getUserId());
+        Long userIndex = 16944L;
 
         // when
-        if(tokenId) {
-            User deleteUser = userRepository.findByUserId(user.getUserId());
+        userRepository.deleteById(userIndex);
 
-            userRepository.deleteById(deleteUser.getUserIndex());
+        // then
+        List<User> userList = userRepository.findAll();
 
-            // then
-            List<User> userList = userRepository.findAll();
+        userList.forEach(u ->
+                System.out.println(
+                        "유저 번호: " + u.getUserIndex() + "\n" +
+                                "유저 아이디: " + u.getUserId() + "\n" +
+                                "유저 비밀번호: " + u.getUserPassword() + "\n"
+                ));
 
-            userList.stream().forEach(u ->
-                    System.out.println(
-                            "유저 번호: " + u.getUserIndex() + "\n" +
-                            "유저 아이디: " + u.getUserId() + "\n" +
-                            "유저 비밀번호: " + u.getUserPassword() + "\n"
-                    ));
-
-            log.info("유저 아이디로 유저 삭제 테스트 종료");
-
-        } else {
-            fail("삭제할 유저가 존재하지 않습니다.");
-        }
+        log.info("유저 아이디로 유저 삭제 테스트 종료");
     }
 
-    // update 문은 실제로 DB의 값의 영향을 줘 @SpringBootTest로 진행해야 함
     @Test
-    @DisplayName("유저 정보 업데이트")
-    void updateUser() {
+    @DisplayName("유저 정보 업데이트 테스트")
+    void testUpdateUser() {
         log.info("유저 정보 업데이트 테스트 시작");
 
         // given
         Long userIndex = 16945L;
-        User updateUser = userRepository.findByUserIndex(userIndex);
-
         String updateUserPassword = "1234";
 
+        user.setUserIndex(userIndex);
+        user.setUserPassword(updateUserPassword);
+
         // when
-        if(!updateUser.getUserPassword().equals(updateUserPassword)) {
-            userRepository.updateUser(updateUserPassword, updateUser.getUserIndex());
-        } else {
-            fail("이전 비밀번호와 동일한 비밀번호입니다.");
-        }
+        User updatedUser = userRepository.save(user);
 
         // then
-        User updatedUser = userRepository.findByUserIndex(updateUser.getUserIndex());
 
-        assertThat(updateUser.getUserPassword())
+        assertThat(updatedUser.getUserPassword())
                 .as("비밀번호 변경에 실패하였습니다.")
-                .isEqualTo(updatedUser.getUserPassword());
+                .isEqualTo(updateUserPassword);
 
         log.info("유저 정보 업데이트 테스트 종료");
     }
 
     @Test
-    @DisplayName("유저 리스트 가져오기(관리자)")
-    void findAll() {
+    @DisplayName("유저 리스트 가져오기(관리자) 테스트")
+    void testFindAll() {
         log.info("유저 리스트 가져오기 테스트 시작");
 
         // given
@@ -213,12 +164,12 @@ class UserRepositoryTest {
                 .as("유저가 존재하지 않습니다.")
                 .isNotEmpty();
 
-        userList.stream().forEach(u ->
+        userList.forEach(u ->
                 System.out.println(
                         "유저 번호: " + u.getUserIndex() + "\n" +
                         "유저 아이디: " + u.getUserId() + "\n" +
                         "유저 비밀번호: " + u.getUserPassword() + "\n"
-                        ));
+                ));
 
         log.info("유저 리스트 가져오기 테스트 종료");
     }

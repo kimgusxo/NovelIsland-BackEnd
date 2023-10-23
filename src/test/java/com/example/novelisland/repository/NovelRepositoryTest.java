@@ -37,8 +37,8 @@ class NovelRepositoryTest {
     }
 
     @Test
-    @DisplayName("소설 아이디로 존재여부 확인")
-    void existsNovelById() {
+    @DisplayName("소설 아이디로 존재여부 확인 테스트")
+    void testExistsNovelById() {
         log.info("소설 아이디로 존재여부 확인 테스트 시작");
         
         // given
@@ -56,36 +56,34 @@ class NovelRepositoryTest {
     }
 
     @Test
-    @DisplayName("소설 아이디로 소설 검색")
-    void findNovelById() {
+    @DisplayName("소설 아이디로 소설 검색 테스트")
+    void testFindNovelById() {
         log.info("소설 아이디로 소설 검색 테스트 시작");
         
         // given
         Long novelId = 6497L;
 
         // when
-        Boolean token = novelRepository.existsByNovelId(novelId);
+        Novel novel = novelRepository.findByNovelId(novelId);
 
         // then
-        if(token) {
-            Novel novel = novelRepository.findByNovelId(novelId);
+        assertThat(novel)
+                .as("소설이 존재하지 않습니다.")
+                .isNotNull();
 
-            System.out.println("소설 인덱스: " + novel.getNovelId());
-            System.out.println("소설 제목: " + novel.getNovelName());
-            System.out.println("작가 이름 : " + novel.getAuthor().getAuthorName());
-            System.out.println("소설 썸네일: " + novel.getNovelThumbNail());
-            System.out.println("소설 설명: " + novel.getNovelExplanation());
-            System.out.println("태그 분류: " + novel.getTag().getTagClassification());
+        System.out.println("소설 인덱스: " + novel.getNovelId());
+        System.out.println("소설 제목: " + novel.getNovelName());
+        System.out.println("작가 이름 : " + novel.getAuthor().getAuthorName());
+        System.out.println("소설 썸네일: " + novel.getNovelThumbNail());
+        System.out.println("소설 설명: " + novel.getNovelExplanation());
+        System.out.println("태그 분류: " + novel.getTag().getTagClassification());
             
-            log.info("소설 아이디로 소설 검색 테스트 종료");
-        } else {
-            fail("소설이 존재하지 않습니다.");
-        }
+        log.info("소설 아이디로 소설 검색 테스트 종료");
     }
 
     @Test
-    @DisplayName("소설이름이 포함되는 소설 목록 검색")
-    void findNovelListByName() {
+    @DisplayName("소설이름이 포함되는 소설 목록 검색 테스트")
+    void testFindNovelListByName() {
         log.info("소설이름이 포함되는 소설 목록 검색 테스트 시작");
         
         // given
@@ -113,9 +111,9 @@ class NovelRepositoryTest {
     }
 
     @Test
-    @DisplayName("여러개의 태그와 소설이름이 포함되는 소설 목록 검색")
+    @DisplayName("여러개의 태그와 소설이름이 포함되는 소설 목록 검색 테스트")
     void testFindNovelListByNovelNameAndTagIdList() {
-        log.info("테스트 시작");
+        log.info("여러개의 태그와 소설이름이 포함되는 소설 목록 검색 테스트 시작");
         
         // given
         String novelName = "가";
@@ -127,7 +125,9 @@ class NovelRepositoryTest {
         List<Novel> novelList = novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable);
 
         // then
-        assertThat(novelList).isNotEmpty();
+        assertThat(novelList)
+                .as("해당 이름과 관련된 소설이 없습니다.")
+                .isNotEmpty();
 
         novelList.forEach(n ->
                 System.out.println(
@@ -139,7 +139,7 @@ class NovelRepositoryTest {
                                 "태그 분류: " + n.getTag().getTagClassification() + "\n"
                 ));
         
-        log.info("테스트 종료");
+        log.info("여러개의 태그와 소설이름이 포함되는 소설 목록 검색 테스트 종료");
     }
 
 }
