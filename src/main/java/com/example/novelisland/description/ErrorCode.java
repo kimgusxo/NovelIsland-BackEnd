@@ -21,6 +21,7 @@ public enum ErrorCode {
     NOT_EXIST_NOVEL_TOKEN(HttpStatus.BAD_REQUEST, "소설이 존재하지 않습니다."),
     NOT_EXIST_AUTHOR_TOKEN(HttpStatus.BAD_REQUEST, "검색하신 작가가 존재하지 않습니다."),
     NOT_EXIST_BOOKMARK_TOKEN(HttpStatus.BAD_REQUEST, "북마크가 존재하지 않습니다."),
+    AlREADY_EXIST_BOOKMARK_TOKEN(HttpStatus.BAD_REQUEST, "이미 북마크가 존재합니다."),
     NOT_VALIDATION_TOKEN(HttpStatus.BAD_REQUEST, "값이 없으면 안됩니다.");
     
     // 500번대: 서버 측 부하 및 DB 관련 문제, 서버 에러

@@ -13,8 +13,9 @@ import java.util.List;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Tag findByTagClassification(String tagClassification);
+    Boolean existsByTagId(Long tagId);
     Boolean existsByTagClassification(String tagClassification);
+    Tag findByTagClassification(String tagClassification);
 
     @Query("select t.tagClassification as tagClassification, n.novelId as novelId, n.novelName as novelName, n.novelThumbNail as novelThumbNail, " +
             "n.novelExplanation as novelExplanation, a.authorName as authorName " +

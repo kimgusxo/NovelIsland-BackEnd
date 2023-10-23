@@ -5,6 +5,7 @@ import com.example.novelisland.domain.BookMark;
 import com.example.novelisland.domain.Novel;
 import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.BookMarkDTO;
+import com.example.novelisland.exception.bookmark.AlreadyExistBookMarkException;
 import com.example.novelisland.exception.bookmark.NotExistBookMarkException;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.BookMarkRepository;
@@ -50,18 +51,24 @@ public class BookMarkService {
     @Transactional
     public BookMarkDTO createBookMarkByUserIndex(Long userIndex, Long novelId) {
         // 북마크가 이미 있을때 예외처리 해야할듯
-        BookMark bookMark = BookMark.builder()
-                .user(User.builder()
-                        .userIndex(userIndex)
-                        .build())
-                .novel(Novel.builder()
-                        .novelId(novelId)
-                        .build())
-                .build();
-        
-        BookMarkDTO bookMarkDTO = bookMarkRepository.save(bookMark).toDTO();
+        Boolean token = bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(userIndex, novelId);
 
-        return bookMarkDTO;
+        if(token) {
+            BookMark bookMark = BookMark.builder()
+                    .user(User.builder()
+                            .userIndex(userIndex)
+                            .build())
+                    .novel(Novel.builder()
+                            .novelId(novelId)
+                            .build())
+                    .build();
+
+            BookMarkDTO bookMarkDTO = bookMarkRepository.save(bookMark).toDTO();
+
+            return bookMarkDTO;
+        } else {
+            throw new AlreadyExistBookMarkException(ErrorCode.AlREADY_EXIST_BOOKMARK_TOKEN);
+        }
     }
 
     @Transactional

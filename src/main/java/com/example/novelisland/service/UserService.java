@@ -34,7 +34,7 @@ public class UserService {
 
     @Transactional
     public void deleteUser(Long userIndex) {
-        boolean token = userRepository.existsByUserIndex(userIndex);
+        Boolean token = userRepository.existsByUserIndex(userIndex);
 
         if(token) {
             userRepository.deleteById(userIndex);
