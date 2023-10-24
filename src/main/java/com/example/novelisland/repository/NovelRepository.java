@@ -17,4 +17,7 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
 
     @Query("select n from Novel n where n.novelName like %:novelName% and n.tag.tagId in :tags")
     List<Novel> findByNovelNameContainingAndTagIdList(@Param("novelName") String novelName, @Param("tags") List<Long> tagIdList, Pageable pageable);
+
+    @Query(nativeQuery = true, value = "select * from novel_tb order by random() limit 3")
+    List<Novel> findThreeNovelsByRandom();
 }

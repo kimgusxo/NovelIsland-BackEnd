@@ -20,6 +20,24 @@ public class NovelController {
         this.novelService = novelService;
     }
 
+    @GetMapping("/get/random")
+    @ApiOperation(value = "랜덤 소설 데이터 받아오기", notes = "랜덤 소설을 가져온다.")
+    public ResponseEntity<Message> getRandomNovels() {
+        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRandomNovels()), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/ranking")
+    @ApiOperation(value = "인기순 소설 데이터 받아오기", notes = "소설을 인기순으로 가져온다.")
+    public ResponseEntity<Message> getRankingNovels() {
+        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRankingNovels()), HttpStatus.OK);
+    }
+
+    @GetMapping("/get/sorting")
+    @ApiOperation(value = "정렬된 소설 데이터 받아오기", notes = "소설을 이름으로 정렬하여 가져온다.")
+    public ResponseEntity<Message> getSortingNovels() {
+        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getSortingNovels()), HttpStatus.OK);
+    }
+
     @GetMapping("/find/novelId")
     @ApiOperation(value = "아이디로 소설 검색", notes = "소설 아이디로 소설 1개를 검색한다.")
     public ResponseEntity<Message> getNovelByNovelId(@RequestParam("novelId") Long novelId) {

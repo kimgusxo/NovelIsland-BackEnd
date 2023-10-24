@@ -7,8 +7,10 @@ import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.NovelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +25,58 @@ public class NovelService {
     @Autowired
     public NovelService(NovelRepository novelRepository) {
         this.novelRepository = novelRepository;
+    }
+
+    @Transactional
+    public List<NovelDTO> getRandomNovels() {
+        List<Novel> novelList = novelRepository.findThreeNovelsByRandom();
+
+        List<NovelDTO> novelDTOList = new ArrayList<>();
+
+        for(Novel novel : novelList) {
+            novelDTOList.add(novel.toDTO());
+        }
+
+        return novelDTOList;
+    }
+
+    @Transactional
+    public List<NovelDTO> getRankingNovels() {
+        int page = 0;
+        int size = 32;
+
+        // Paging 설정
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Novel> novelList = novelRepository.findAll(pageable);
+
+        List<NovelDTO> novelDTOList = new ArrayList<>();
+
+        for(Novel novel : novelList) {
+            novelDTOList.add(novel.toDTO());
+        }
+
+        return novelDTOList;
+    }
+
+    @Transactional
+    public List<NovelDTO> getSortingNovels() {
+        int page = 0;
+        int size = 32;
+
+        // Paging 설정
+        Sort sort = Sort.by(Sort.Order.asc("novelName"));
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Novel> novelList = novelRepository.findAll(pageable);
+
+        List<NovelDTO> novelDTOList = new ArrayList<>();
+
+        for(Novel novel : novelList) {
+            novelDTOList.add(novel.toDTO());
+        }
+
+        return novelDTOList;
     }
 
     @Transactional
