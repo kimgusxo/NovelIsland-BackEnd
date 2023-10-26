@@ -1,5 +1,6 @@
 package com.example.novelisland.domain;
 
+import com.example.novelisland.dto.TagDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,4 +30,15 @@ public class Tag {
             unique = true)
     private String tagClassification;
 
+    public Tag(Long tagId, String tagClassification) {
+        this.tagId = tagId;
+        this.tagClassification = tagClassification;
+    }
+
+    public TagDTO toDTO() {
+        return TagDTO.builder()
+                .tagId(tagId)
+                .tagClassification(tagClassification)
+                .build();
+    }
 }

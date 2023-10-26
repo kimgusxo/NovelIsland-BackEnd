@@ -1,13 +1,16 @@
 package com.example.novelisland.service;
 
 import com.example.novelisland.description.ErrorCode;
+import com.example.novelisland.domain.Tag;
 import com.example.novelisland.dto.NovelSummaryDTO;
+import com.example.novelisland.dto.TagDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.projection.NovelSummary;
 import com.example.novelisland.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +25,21 @@ public class TagService {
     @Autowired
     public TagService(TagRepository tagRepository) {
         this.tagRepository = tagRepository;
+    }
+
+    @Transactional
+    public List<TagDTO> getSortingTags() {
+        Sort sort = Sort.by(Sort.Order.asc("tagClassification"));
+
+        List<Tag> tagList = tagRepository.findAll(sort);
+
+        List<TagDTO> tagDTOList = new ArrayList<>();
+
+        for(Tag tag : tagList) {
+            tagDTOList.add(tag.toDTO());
+        }
+
+        return tagDTOList;
     }
 
     @Transactional

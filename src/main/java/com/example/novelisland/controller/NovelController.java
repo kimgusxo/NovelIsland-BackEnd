@@ -4,11 +4,13 @@ import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.format.Message;
 import com.example.novelisland.service.NovelService;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Slf4j
 @RestController
 @RequestMapping("/novel")
 public class NovelController {
@@ -23,24 +25,28 @@ public class NovelController {
     @GetMapping("/get/random")
     @ApiOperation(value = "랜덤 소설 데이터 받아오기", notes = "랜덤 소설을 가져온다.")
     public ResponseEntity<Message> getRandomNovels() {
+        log.info("getRandomNovels");
         return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRandomNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/get/ranking")
     @ApiOperation(value = "인기순 소설 데이터 받아오기", notes = "소설을 인기순으로 가져온다.")
     public ResponseEntity<Message> getRankingNovels() {
+        log.info("getRankingNovels");
         return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRankingNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/get/sorting")
     @ApiOperation(value = "정렬된 소설 데이터 받아오기", notes = "소설을 이름으로 정렬하여 가져온다.")
     public ResponseEntity<Message> getSortingNovels() {
+        log.info("getSortingNovels");
         return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getSortingNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/find/novelId")
     @ApiOperation(value = "아이디로 소설 검색", notes = "소설 아이디로 소설 1개를 검색한다.")
     public ResponseEntity<Message> getNovelByNovelId(@RequestParam("novelId") Long novelId) {
+        log.info("getNovelByNovelId: {}", novelId);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelByNovelId(novelId)), HttpStatus.OK);
     }
 
@@ -49,6 +55,7 @@ public class NovelController {
     public ResponseEntity<Message> getNovelsByNovelName(@RequestParam("novelName") String novelName,
                                                         @RequestParam("page") Integer page,
                                                         @RequestParam("size") Integer size) {
+        log.info("getNovelsByNovelName: {}", novelName);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(),
                 novelService.getNovelsByNovelName(novelName, page, size)), HttpStatus.OK);
     }
@@ -58,6 +65,7 @@ public class NovelController {
     public ResponseEntity<Message> getNovelsByNovelNameContainingAndTagIdList(@ModelAttribute SearchDTO searchDTO,
                                                                               @RequestParam("page") Integer page,
                                                                               @RequestParam("size") Integer size) {
+        log.info("getNovelsByNovelNameContainingAndTagIdList: {}", searchDTO);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(),
                 novelService.getNovelsByNovelNameContainingAndTagIdList(searchDTO, page, size)), HttpStatus.OK);
     }
