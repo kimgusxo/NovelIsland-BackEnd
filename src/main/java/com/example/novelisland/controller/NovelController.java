@@ -1,6 +1,5 @@
 package com.example.novelisland.controller;
 
-import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.format.Message;
 import com.example.novelisland.service.NovelService;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -62,11 +63,12 @@ public class NovelController {
 
     @GetMapping("/find/novelName/and/tagId")
     @ApiOperation(value = "이름과 장르들로 소설 목록 검색", notes = "소설 이름과 태그 리스트로 소설 리스트를 검색한다.")
-    public ResponseEntity<Message> getNovelsByNovelNameContainingAndTagIdList(@ModelAttribute SearchDTO searchDTO,
+    public ResponseEntity<Message> getNovelsByNovelNameContainingAndTagIdList(@RequestParam("novelName") String novelName,
+                                                                              @RequestParam("tagIdList") List<Long> tagIdList,
                                                                               @RequestParam("page") Integer page,
                                                                               @RequestParam("size") Integer size) {
-        log.info("getNovelsByNovelNameContainingAndTagIdList: {}", searchDTO);
+        log.info("getNovelsByNovelNameContainingAndTagIdList: {}, {}", novelName, tagIdList);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(),
-                novelService.getNovelsByNovelNameContainingAndTagIdList(searchDTO, page, size)), HttpStatus.OK);
+                novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size)), HttpStatus.OK);
     }
 }

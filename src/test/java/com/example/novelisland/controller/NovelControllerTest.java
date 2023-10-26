@@ -2,7 +2,6 @@ package com.example.novelisland.controller;
 
 import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.dto.NovelDTO;
-import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.service.NovelService;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -128,12 +128,17 @@ class NovelControllerTest {
     void testGetNovelsByNovelNameContainingAndTagIdList_성공() throws Exception {
         log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 시작");
 
+        String novelName ="가";
+        List<Long> tagIdList = new ArrayList<>();
+        tagIdList.add(0L);
+
         // given
-        given(novelService.getNovelsByNovelNameContainingAndTagIdList(new SearchDTO(), page, size)).willReturn(new ArrayList<>());
+        given(novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size)).willReturn(new ArrayList<>());
 
         // when & then
         mockMvc.perform(get("/novel/find/novelName/and/tagId")
-                        .content("{\"novelName\":\"test\",\"tagIdList\":[1]}")
+                        .param("novelName", "가")
+                        .param("tagIdList", "0")
                         .param("page", "0")
                         .param("size", "10")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -147,13 +152,18 @@ class NovelControllerTest {
     void testGetNovelsByNovelNameContainingAndTagIdList_실패() throws Exception {
         log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 시작");
 
+        String novelName ="가";
+        List<Long> tagIdList = new ArrayList<>();
+        tagIdList.add(0L);
+
         // given
-        given(novelService.getNovelsByNovelNameContainingAndTagIdList(any(SearchDTO.class), any(int.class), any(int.class)))
+        given(novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size))
                 .willThrow(new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN));
 
         // when & then
         mockMvc.perform(get("/novel/find/novelName/and/tagId")
-                        .content("{\"novelName\":\"test\",\"tagIdList\":[1]}")
+                        .param("novelName", "가")
+                        .param("tagIdList", "0")
                         .param("page", "0")
                         .param("size", "10")
                         .contentType(MediaType.APPLICATION_JSON))

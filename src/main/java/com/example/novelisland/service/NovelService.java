@@ -3,7 +3,6 @@ package com.example.novelisland.service;
 import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.domain.Novel;
 import com.example.novelisland.dto.NovelDTO;
-import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.NovelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,11 +113,11 @@ public class NovelService {
     }
 
     @Transactional
-    public List<NovelDTO> getNovelsByNovelNameContainingAndTagIdList(SearchDTO searchDTO, int page, int size) {
+    public List<NovelDTO> getNovelsByNovelNameContainingAndTagIdList(String novelName, List<Long> tagIdList, int page, int size) {
         // paging 설정
         Pageable pageable = PageRequest.of(page, size);
 
-        List<Novel> novelList = novelRepository.findByNovelNameContainingAndTagIdList(searchDTO.getNovelName(), searchDTO.getTagIdList(), pageable);
+        List<Novel> novelList = novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable);
 
         List<NovelDTO> novelDTOList = new ArrayList<>();
 

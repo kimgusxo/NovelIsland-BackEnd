@@ -4,8 +4,6 @@ import com.example.novelisland.domain.Author;
 import com.example.novelisland.domain.Novel;
 import com.example.novelisland.domain.Tag;
 import com.example.novelisland.dto.NovelDTO;
-import com.example.novelisland.dto.SearchDTO;
-import com.example.novelisland.exception.author.NotExistAuthorException;
 import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.NovelRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -157,15 +155,13 @@ class NovelServiceTest {
         List<Long> tagIdList = new ArrayList<>();
         tagIdList.add(novel.getTag().getTagId());
 
-        SearchDTO searchDTO = new SearchDTO(novelName, tagIdList);
-
         List<Novel> novelList = new ArrayList<>();
         novelList.add(novel);
 
         when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable)).thenReturn(novelList);
 
         // when
-        List<NovelDTO> novelDTOList = novelService.getNovelsByNovelNameContainingAndTagIdList(searchDTO, page, size);
+        List<NovelDTO> novelDTOList = novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size);
 
         // then
         assertThat(novelDTOList).isNotNull();
@@ -184,14 +180,12 @@ class NovelServiceTest {
         List<Long> tagIdList = new ArrayList<>();
         tagIdList.add(novel.getTag().getTagId());
 
-        SearchDTO searchDTO = new SearchDTO(novelName, tagIdList);
-
         when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable)).thenReturn(new ArrayList<>());
 
         // when
 
         // then
-        assertThatThrownBy(() -> novelService.getNovelsByNovelNameContainingAndTagIdList(searchDTO, page, size))
+        assertThatThrownBy(() -> novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size))
                 .isInstanceOf(NotExistNovelException.class);
 
         log.info("소설 이름과 태그 리스트로 소설 리스트 검색 테스트 종료");

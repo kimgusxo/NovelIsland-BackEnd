@@ -1,6 +1,5 @@
 package com.example.novelisland.integration;
 
-import com.example.novelisland.dto.SearchDTO;
 import com.example.novelisland.format.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -138,11 +137,9 @@ class NovelTest {
         String novelName = "가";
         List<Long> tagIdList = List.of(4764L, 4765L);
 
-        SearchDTO searchDTO = new SearchDTO(novelName, tagIdList);
-
         ResponseEntity<Message> response = restTemplate.getForEntity(
-                createURLWithPort("/novel/find/novelName/and/tagId?novelName=" + searchDTO.getNovelName() +
-                        "&tagIdList=" + searchDTO.getTagIdList().stream().map(Objects::toString).collect(Collectors.joining(",")) + "&page=" + page + "&size=" + size),
+                createURLWithPort("/novel/find/novelName/and/tagId?novelName=" + novelName +
+                        "&tagIdList=" + tagIdList.stream().map(Objects::toString).collect(Collectors.joining(",")) + "&page=" + page + "&size=" + size),
                 Message.class
         );
 
@@ -164,11 +161,9 @@ class NovelTest {
         String novelName = "가";
         List<Long> tagIdList = List.of(1L, 2L);
 
-        SearchDTO searchDTO = new SearchDTO(novelName, tagIdList);
-
         ResponseEntity<Message> response = restTemplate.getForEntity(
-                createURLWithPort("/novel/find/novelName/and/tagId?novelName=" + searchDTO.getNovelName() +
-                        "&tagIdList=" + searchDTO.getTagIdList().stream().map(Objects::toString).collect(Collectors.joining(",")) + "&page=" + page + "&size=" + size),
+                createURLWithPort("/novel/find/novelName/and/tagId?novelName=" + novelName +
+                        "&tagIdList=" + tagIdList.stream().map(Objects::toString).collect(Collectors.joining(",")) + "&page=" + page + "&size=" + size),
                 Message.class
         );
 
