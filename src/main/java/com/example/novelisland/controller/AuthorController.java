@@ -21,6 +21,13 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
+    @GetMapping("/get/sorting")
+    @ApiOperation(value = "정렬된 작가 데이터 받아오기", notes = "작가를 이름으로 정렬하여 가져온다.")
+    public ResponseEntity<Message> getSortingAuthor() {
+        log.info("getSortingAuthor");
+        return new ResponseEntity<>(Message.of("정렬된 작가 가져오기 완료", HttpStatus.OK.value(), authorService.getSortingAuthor()), HttpStatus.OK);
+    }
+
     @GetMapping("/find/authorId")
     @ApiOperation(value = "아이디로 작가 검색", notes = "작가 아이디로 작가를 검색한다.")
     public ResponseEntity<Message> getAuthorByAuthorId(@RequestParam("authorId") Long authorId) {

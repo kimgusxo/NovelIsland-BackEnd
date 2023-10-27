@@ -27,21 +27,21 @@ public class NovelController {
     @ApiOperation(value = "랜덤 소설 데이터 받아오기", notes = "랜덤 소설을 가져온다.")
     public ResponseEntity<Message> getRandomNovels() {
         log.info("getRandomNovels");
-        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRandomNovels()), HttpStatus.OK);
+        return new ResponseEntity<>(Message.of("랜덤 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRandomNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/get/ranking")
     @ApiOperation(value = "인기순 소설 데이터 받아오기", notes = "소설을 인기순으로 가져온다.")
     public ResponseEntity<Message> getRankingNovels() {
         log.info("getRankingNovels");
-        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRankingNovels()), HttpStatus.OK);
+        return new ResponseEntity<>(Message.of("인기순 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRankingNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/get/sorting")
     @ApiOperation(value = "정렬된 소설 데이터 받아오기", notes = "소설을 이름으로 정렬하여 가져온다.")
     public ResponseEntity<Message> getSortingNovels() {
         log.info("getSortingNovels");
-        return new ResponseEntity<>(Message.of("소설 가져오기 완료", HttpStatus.OK.value(), novelService.getSortingNovels()), HttpStatus.OK);
+        return new ResponseEntity<>(Message.of("정렬된 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getSortingNovels()), HttpStatus.OK);
     }
 
     @GetMapping("/find/novelId")
