@@ -113,6 +113,26 @@ public class NovelService {
     }
 
     @Transactional
+    public List<NovelDTO> getNovelsByAuthorId(Long authorId, int page, int size) {
+        // Paging 설정
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Novel> novelList = novelRepository.findByAuthor_AuthorId(authorId, pageable);
+
+        List<NovelDTO> novelDTOList = new ArrayList<>();
+
+        if(novelList.isEmpty()) {
+            // 해당하는 소설이 없을 때 예외처리
+            throw new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN);
+        } else {
+            for(Novel novel : novelList) {
+                novelDTOList.add(novel.toDTO());
+            }
+            return novelDTOList;
+        }
+    }
+
+    @Transactional
     public List<NovelDTO> getNovelsByNovelNameContainingAndTagIdList(String novelName, List<Long> tagIdList, int page, int size) {
         // paging 설정
         Pageable pageable = PageRequest.of(page, size);

@@ -6,6 +6,7 @@ import com.example.novelisland.domain.Novel;
 import com.example.novelisland.dto.AuthorDTO;
 import com.example.novelisland.dto.NovelDTO;
 import com.example.novelisland.exception.author.NotExistAuthorException;
+import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -60,15 +61,22 @@ public class AuthorService {
     }
 
     @Transactional
-    public AuthorDTO getAuthorByAuthorName(String authorName) {
+    public List<AuthorDTO> getAuthorByAuthorName(String authorName, int page, int size) {
+        // Paging 설정
+        Pageable pageable = PageRequest.of(page, size);
 
-        Boolean token = authorRepository.existsByAuthorName(authorName);
+        List<Author> authorList = authorRepository.findByAuthorNameContaining(authorName, pageable);
 
-        if(token) {
-            Author author = authorRepository.findByAuthorName(authorName);
-            return author.toDTO();
-        } else {
+        List<AuthorDTO> authorDTOList = new ArrayList<>();
+
+        if(authorList.isEmpty()) {
+            // 해당하는 소설이 없을 때 예외처리
             throw new NotExistAuthorException(ErrorCode.NOT_EXIST_AUTHOR_TOKEN);
+        } else {
+            for(Author author : authorList) {
+                authorDTOList.add(author.toDTO());
+            }
+            return authorDTOList;
         }
     }
 

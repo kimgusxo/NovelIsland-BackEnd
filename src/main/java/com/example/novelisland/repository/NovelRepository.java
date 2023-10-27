@@ -14,6 +14,7 @@ public interface NovelRepository extends JpaRepository<Novel, Long> {
     Boolean existsByNovelId(Long novelId);
     Novel findByNovelId(Long novelId);
     List<Novel> findByNovelNameContaining(String novelName, Pageable pageable);
+    List<Novel> findByAuthor_AuthorId(Long authorId, Pageable pageable);
 
     @Query("select n from Novel n where n.novelName like %:novelName% and n.tag.tagId in :tags")
     List<Novel> findByNovelNameContainingAndTagIdList(@Param("novelName") String novelName, @Param("tags") List<Long> tagIdList, Pageable pageable);
