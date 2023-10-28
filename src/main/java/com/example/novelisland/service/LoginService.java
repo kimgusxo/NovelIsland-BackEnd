@@ -5,7 +5,6 @@ import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.LoginDTO;
 import com.example.novelisland.dto.TokenDTO;
-import com.example.novelisland.dto.UserDTO;
 import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
@@ -27,6 +26,14 @@ public class LoginService {
     public LoginService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider) {
         this.userRepository = userRepository;
         this.jwtTokenProvider = jwtTokenProvider;
+    }
+
+    @Transactional
+    public Boolean duplicateCheck(String userId) {
+
+        Boolean token = userRepository.existsByUserId(userId);
+
+        return token;
     }
 
     @Transactional
