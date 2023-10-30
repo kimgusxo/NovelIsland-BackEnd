@@ -19,6 +19,7 @@ public enum ErrorCode {
     INVALID_PASSWORD_TOKEN(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
     NOT_EXIST_USER_TOKEN(HttpStatus.BAD_REQUEST, "유저가 존재하지 않습니다."),
     NOT_EXIST_NOVEL_TOKEN(HttpStatus.BAD_REQUEST, "소설이 존재하지 않습니다."),
+    NOT_EXIST_TAG_TOKEN(HttpStatus.BAD_REQUEST, "태그가 존재하지 않습니다."),
     NOT_EXIST_AUTHOR_TOKEN(HttpStatus.BAD_REQUEST, "검색하신 작가가 존재하지 않습니다."),
     NOT_EXIST_BOOKMARK_TOKEN(HttpStatus.BAD_REQUEST, "북마크가 존재하지 않습니다."),
     AlREADY_EXIST_BOOKMARK_TOKEN(HttpStatus.BAD_REQUEST, "이미 북마크가 존재합니다."),

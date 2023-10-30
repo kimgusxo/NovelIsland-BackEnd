@@ -51,6 +51,13 @@ public class NovelController {
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelByNovelId(novelId)), HttpStatus.OK);
     }
 
+    @GetMapping("/find/novelIdList")
+    @ApiOperation(value = "아이디 리스트로 소설 검색", notes = "소설 아이디 리스트로 소설 리스트를 검색한다.")
+    public ResponseEntity<Message> getNovelsByNovelIdList(@RequestParam("novelIdList") List<Long> novelIdList) {
+        log.info("getNovelsByNovelIdList: {}", novelIdList);
+        return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelsByNovelIdList(novelIdList)), HttpStatus.OK);
+    }
+
     @GetMapping("/find/novelName")
     @ApiOperation(value = "이름으로 소설 목록 검색", notes = "소설 이름으로 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByNovelName(@RequestParam("novelName") String novelName,

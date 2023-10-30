@@ -10,8 +10,12 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -37,6 +41,15 @@ public class SecurityConfig {
                         .antMatchers("/bookmark/**").authenticated()
                         .antMatchers("/user/**").authenticated()
                     .anyRequest().permitAll()
+                .and()
+                .cors()
+                .configurationSource(request -> {
+                    CorsConfiguration corsConfig = new CorsConfiguration();
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:8080")); // 허용할 오리진을 설정하세요
+                    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 메소드를 설정하세요
+                    corsConfig.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // 허용할 헤더를 설정하세요
+                    return corsConfig;
+                }) // CORS 설정 추가
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 

@@ -32,8 +32,16 @@ public class TagController {
     }
 
     @GetMapping("/find/tagId")
+    @ApiOperation(value = "태그 아이디로 태그 검색", notes = "태그 아이디로 해당 태그를 검색한다.")
+    public ResponseEntity<Message> getTagByTagId(@RequestParam("tagId") Long tagId) {
+        log.info("getTagByTagId: {}", tagId);
+        return new ResponseEntity<>(Message.of("태그 검색 성공", HttpStatus.OK.value(),
+                tagService.getTagByTagId(tagId)), HttpStatus.OK);
+    }
+
+    @GetMapping("/find/tagId/novels")
     @ApiOperation(value = "태그 아이디로 소설검색", notes = "해당 태그의 소설 리스트를 검색한다.")
-    public ResponseEntity<Message> getNovelsTagId(@RequestParam("tagId") Long tagId,
+    public ResponseEntity<Message> getNovelsByTagId(@RequestParam("tagId") Long tagId,
                                                   @RequestParam("page") Integer page,
                                                   @RequestParam("size") Integer size) {
         log.info("getNovelsTagId: {}", tagId);
@@ -41,7 +49,7 @@ public class TagController {
                tagService.getNovelsByTagId(tagId, page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/tagClassification")
+    @GetMapping("/find/tagClassification/novels")
     @ApiOperation(value = "태그 이름으로 소설검색", notes = "해당 태그의 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByTagClassification(@RequestParam("tagClassification") String tagClassification,
                                                                 @RequestParam("page") Integer page,

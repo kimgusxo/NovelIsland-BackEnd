@@ -8,6 +8,7 @@ import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
 import com.example.novelisland.exception.novel.NotExistNovelException;
+import com.example.novelisland.exception.tag.NotExistTagException;
 import com.example.novelisland.exception.user.NotExistUserException;
 import com.example.novelisland.format.ErrorMessage;
 import org.springframework.http.HttpStatus;
@@ -52,6 +53,11 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(NotExistBookMarkException.class)
     public ResponseEntity<ErrorMessage> handleNotExistBookMarkException() {
         return new ResponseEntity<>(ErrorMessage.of(ErrorCode.NOT_EXIST_BOOKMARK_TOKEN), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotExistTagException.class)
+    public ResponseEntity<ErrorMessage> handleNotExistTagException() {
+        return new ResponseEntity<>(ErrorMessage.of(ErrorCode.NOT_EXIST_TAG_TOKEN), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(AlreadyExistBookMarkException.class)

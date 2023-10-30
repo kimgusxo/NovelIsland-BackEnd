@@ -93,6 +93,25 @@ public class NovelService {
     }
 
     @Transactional
+    public List<NovelDTO> getNovelsByNovelIdList(List<Long> novelIdList) {
+
+        List<NovelDTO> novelDTOList = new ArrayList<>();
+
+        for(Long novelId : novelIdList) {
+
+            Boolean token = novelRepository.existsByNovelId(novelId);
+
+            if(token) {
+                NovelDTO novelDTO = novelRepository.findByNovelId(novelId).toDTO();
+                novelDTOList.add(novelDTO);
+            } else {
+                return null;
+            }
+        }
+        return novelDTOList;
+    }
+
+    @Transactional
     public List<NovelDTO> getNovelsByNovelName(String novelName, int page, int size) {
         // Paging 설정
         Pageable pageable = PageRequest.of(page, size);

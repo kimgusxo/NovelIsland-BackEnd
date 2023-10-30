@@ -15,6 +15,7 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     Boolean existsByTagId(Long tagId);
     Boolean existsByTagClassification(String tagClassification);
+    Tag findByTagId(Long tagId);
     Tag findByTagClassification(String tagClassification);
 
     @Query("select t.tagClassification as tagClassification, n.novelId as novelId, n.novelName as novelName, n.novelThumbNail as novelThumbNail, " +

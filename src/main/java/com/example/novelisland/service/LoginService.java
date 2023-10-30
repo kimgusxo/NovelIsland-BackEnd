@@ -51,6 +51,8 @@ public class LoginService {
 
             return TokenDTO.builder()
                     .userIndex(user.getUserIndex())
+                    .userId(user.getUserId())
+                    .userPassword(user.getUserPassword())
                     .jwtToken(jwtToken)
                     .build();
         }
@@ -68,6 +70,8 @@ public class LoginService {
 
                 return TokenDTO.builder()
                         .userIndex(user.getUserIndex())
+                        .userId(user.getUserId())
+                        .userPassword(user.getUserPassword())
                         .jwtToken(jwtToken)
                         .build();
             } else {

@@ -39,7 +39,7 @@ public class BookMarkService {
 
         if(bookMarkList.isEmpty()) {
             // 해당하는 북마크가 없을 때 예외처리
-            throw new NotExistBookMarkException(ErrorCode.NOT_EXIST_BOOKMARK_TOKEN);
+            return null;
         } else {
             for(BookMark bookMark : bookMarkList) {
                 bookMarkDTOList.add(bookMark.toDTO());
@@ -53,7 +53,7 @@ public class BookMarkService {
         // 북마크가 이미 있을때 예외처리 해야할듯
         Boolean token = bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(userIndex, novelId);
 
-        if(token) {
+        if(!token) {
             BookMark bookMark = BookMark.builder()
                     .user(User.builder()
                             .userIndex(userIndex)

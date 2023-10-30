@@ -5,6 +5,7 @@ import com.example.novelisland.domain.Tag;
 import com.example.novelisland.dto.NovelSummaryDTO;
 import com.example.novelisland.dto.TagDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
+import com.example.novelisland.exception.tag.NotExistTagException;
 import com.example.novelisland.projection.NovelSummary;
 import com.example.novelisland.repository.TagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,19 @@ public class TagService {
         }
 
         return tagDTOList;
+    }
+
+    @Transactional
+    public TagDTO getTagByTagId(Long tagId) {
+
+        Boolean token = tagRepository.existsByTagId(tagId);
+
+        if(token) {
+            TagDTO tagDTO = tagRepository.findByTagId(tagId).toDTO();
+            return tagDTO;
+        } else {
+            throw new NotExistTagException(ErrorCode.NOT_EXIST_TAG_TOKEN);
+        }
     }
 
     @Transactional
