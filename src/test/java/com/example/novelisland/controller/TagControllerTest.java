@@ -1,7 +1,9 @@
 package com.example.novelisland.controller;
 
 import com.example.novelisland.description.ErrorCode;
+import com.example.novelisland.dto.TagDTO;
 import com.example.novelisland.exception.novel.NotExistNovelException;
+import com.example.novelisland.exception.tag.NotExistTagException;
 import com.example.novelisland.service.BookMarkService;
 import com.example.novelisland.service.TagService;
 import lombok.extern.slf4j.Slf4j;
@@ -40,9 +42,61 @@ class TagControllerTest {
         log.info("페이지 변수 설정");
         
         page = 0;
-        size = 10;
+        size = 32;
 
         log.info("페이지 변수 설정완료");
+    }
+
+    @Test
+    @DisplayName("정렬된 태그 리스트 검색 테스트 성공")
+    void testGetSortingTags_성공() throws Exception {
+        log.info("정렬된 태그 리스트 검색 테스트 시작");
+
+        // given
+        given(tagService.getSortingTags()).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/tag/get/sorting")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        log.info("정렬된 태그 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 아이디로 태그 검색 테스트 성공")
+    void testGetTagByTagId_성공() throws Exception {
+        log.info("태그 아이디로 태그 검색 테스트 시작");
+
+        // given
+        Long tagId = 1L;
+        given(tagService.getTagByTagId(tagId)).willReturn(new TagDTO());
+
+        // when & then
+        mockMvc.perform(get("/tag/find/tagId")
+                        .param("tagId", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        log.info("태그 아이디로 태그 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 아이디로 태그 검색 테스트 실패")
+    void testGetTagByTagId_실패() throws Exception {
+        log.info("태그 아이디로 태그 검색 테스트 시작");
+
+        // given
+        Long tagId = 1L;
+        given(tagService.getTagByTagId(tagId)).willThrow(new NotExistTagException(ErrorCode.NOT_EXIST_TAG_TOKEN));
+
+        // when & then
+        mockMvc.perform(get("/tag/find/tagId")
+                        .param("tagId", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        log.info("태그 아이디로 태그 검색 테스트 종료");
     }
 
     @Test
@@ -55,10 +109,10 @@ class TagControllerTest {
         given(tagService.getNovelsByTagId(tagId, page, size)).willReturn(new ArrayList<>());
 
         // when & then
-        mockMvc.perform(get("/tag/find/tagId")
+        mockMvc.perform(get("/tag/find/tagId/novels")
                 .param("tagId", "1")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                 .contentType(MediaType.APPLICATION_JSON))
                         .andExpect(status().isOk());
 
@@ -75,10 +129,10 @@ class TagControllerTest {
         given(tagService.getNovelsByTagId(tagId, page, size)).willThrow(new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN));
 
         // when & then
-        mockMvc.perform(get("/tag/find/tagId")
+        mockMvc.perform(get("/tag/find/tagId/novels")
                         .param("tagId", "1")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
@@ -95,10 +149,10 @@ class TagControllerTest {
         given(tagService.getNovelsByTagClassification(tagClassification, page, size)).willReturn(new ArrayList<>());
 
         // when & then
-        mockMvc.perform(get("/tag/find/tagClassification")
+        mockMvc.perform(get("/tag/find/tagClassification/novels")
                         .param("tagClassification", "test")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -115,10 +169,10 @@ class TagControllerTest {
         given(tagService.getNovelsByTagClassification(tagClassification, page, size)).willThrow(new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN));
 
         // when & then
-        mockMvc.perform(get("/tag/find/tagClassification")
+        mockMvc.perform(get("/tag/find/tagClassification/novels")
                         .param("tagClassification", "test")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 

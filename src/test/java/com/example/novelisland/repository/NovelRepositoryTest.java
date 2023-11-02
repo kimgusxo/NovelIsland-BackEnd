@@ -33,7 +33,11 @@ class NovelRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        log.info("페이지 설정");
+        
         pageable = PageRequest.of(0, 10);
+
+        log.info("페이지 설정 완료");
     }
 
     @Test
@@ -79,6 +83,35 @@ class NovelRepositoryTest {
         System.out.println("태그 분류: " + novel.getTag().getTagClassification());
             
         log.info("소설 아이디로 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("작가 아이디로 작가가 쓴 소설 목록 검색 테스트")
+    void testFindByAuthor_AuthorId() {
+        log.info("작가 아이디로 작가가 쓴 소설 목록 검색 테스트 시작");
+
+        // given
+        Long authorId = 1L;
+
+        // when
+        List<Novel> novelList = novelRepository.findByAuthor_AuthorId(authorId, pageable);
+
+        // then
+        assertThat(novelList)
+                .as("해당 작가가 작성한 소설이 없습니다.")
+                .isNotEmpty();
+
+        novelList.forEach(n ->
+                System.out.println(
+                        "소설 인덱스: " + n.getNovelId() + "\n" +
+                                "소설 제목: " + n.getNovelName() + "\n" +
+                                "작가 이름: " + n.getAuthor().getAuthorName() + "\n" +
+                                "소설 썸네일: " + n.getNovelThumbNail() + "\n" +
+                                "소설 설명: " + n.getNovelExplanation() + "\n" +
+                                "태그 분류: " + n.getTag().getTagClassification() + "\n"
+                ));
+
+        log.info("작가 아이디로 작가가 쓴 소설 목록 검색 테스트 종료");
     }
 
     @Test
@@ -140,6 +173,34 @@ class NovelRepositoryTest {
                 ));
         
         log.info("여러개의 태그와 소설이름이 포함되는 소설 목록 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("3개의 랜덤 소설 검색 테스트")
+    void testFindThreeNovelsByRandom() {
+        log.info("3개의 랜덤 소설 검색 테스트 시작");
+
+        // given
+
+        // when
+        List<Novel> novelList = novelRepository.findThreeNovelsByRandom();
+
+        // then
+        assertThat(novelList)
+                .as("3개의 랜덤 소설이 없습니다.")
+                .isNotEmpty();
+
+        novelList.forEach(n ->
+                System.out.println(
+                        "소설 인덱스: " + n.getNovelId() + "\n" +
+                                "소설 제목: " + n.getNovelName() + "\n" +
+                                "작가 이름: " + n.getAuthor().getAuthorName() + "\n" +
+                                "소설 썸네일: " + n.getNovelThumbNail() + "\n" +
+                                "소설 설명: " + n.getNovelExplanation() + "\n" +
+                                "태그 분류: " + n.getTag().getTagClassification() + "\n"
+                ));
+
+        log.info("3개의 랜덤 소설 검색 테스트 종료");
     }
 
 }

@@ -33,7 +33,6 @@ dependencies {
 	implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
 	implementation group: 'org.bgee.log4jdbc-log4j2', name: 'log4jdbc-log4j2-jdbc4.1', version: '1.16'
 	implementation 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
-
 	// document
 	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'

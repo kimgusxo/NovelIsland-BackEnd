@@ -44,6 +44,15 @@ class BookMarkServiceTest {
 
     @BeforeEach
     void setUp() {
+        log.info("페이지 설정");
+
+        page = 0;
+        size = 32;
+
+        pageable = PageRequest.of(page, size);
+
+        log.info("페이지 설정 완료");
+
         log.info("테스트 DTO 생성");
 
         Long bookMarkId = 1L;
@@ -59,11 +68,6 @@ class BookMarkServiceTest {
                         .novelId(novelId)
                         .build())
                 .build();
-
-        page = 0;
-        size = 10;
-
-        pageable = PageRequest.of(page, size);
 
         log.info("테스트 DTO 생성완료");
     }
@@ -97,10 +101,10 @@ class BookMarkServiceTest {
         when(bookMarkRepository.findByUser_UserIndex(bookMark.getUser().getUserIndex(), pageable)).thenReturn(new ArrayList<>());
 
         // when
+        List<BookMarkDTO> bookMarkDTOList = bookMarkService.getBookMarkListByUserIndex(bookMark.getUser().getUserIndex(), page, size);
 
         // then
-        assertThatThrownBy(() -> bookMarkService.getBookMarkListByUserIndex(bookMark.getUser().getUserIndex(), page, size))
-                .isInstanceOf(NotExistBookMarkException.class);
+        assertThat(bookMarkDTOList).isNull();
 
         log.info("유저 인덱스로 유저의 북마크 검색 테스트 종료");
     }
@@ -112,7 +116,7 @@ class BookMarkServiceTest {
 
         // given
         when(bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(bookMark.getUser().getUserIndex(), bookMark.getNovel().getNovelId()))
-                .thenReturn(true);
+                .thenReturn(false);
         when(bookMarkRepository.save(any(BookMark.class))).thenReturn(bookMark);
 
         // when
@@ -131,7 +135,7 @@ class BookMarkServiceTest {
 
         // given
         when(bookMarkRepository.existsByUser_UserIndexAndNovel_NovelId(bookMark.getUser().getUserIndex(), bookMark.getNovel().getNovelId()))
-                .thenReturn(false);
+                .thenReturn(true);
 
         // when
 

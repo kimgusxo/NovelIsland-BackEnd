@@ -21,7 +21,6 @@ public class BookMarkController {
         this.bookMarkService = bookMarkService;
     }
 
-    // 여기는 고민해봐야 할듯??
     @GetMapping("/find/userIndex")
     @ApiOperation(value = "유저 인덱스로 북마크 리스트 검색", notes = "유저 인덱스로 해당 유저의 북마크된 소설리스트를 가져온다.")
     public ResponseEntity<Message> getBookMarkListByUserIndex(@RequestParam("userIndex") Long userIndex,

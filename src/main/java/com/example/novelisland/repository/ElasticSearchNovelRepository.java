@@ -8,5 +8,6 @@
 //public interface ElasticSearchNovelRepository extends ElasticsearchRepository<ElasticSearchNovel, Long> {
 //
 //    List<ElasticSearchNovel> findAll();
+//    List<ElasticSearchNovel> findByNovelExplanation(String novelExplanation);
 //
 //}

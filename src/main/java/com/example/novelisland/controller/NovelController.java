@@ -52,7 +52,7 @@ public class NovelController {
     }
 
     @GetMapping("/find/novelIdList")
-    @ApiOperation(value = "아이디 리스트로 소설 검색", notes = "소설 아이디 리스트로 소설 리스트를 검색한다.")
+    @ApiOperation(value = "아이디 리스트로 소설 목록 검색", notes = "소설 아이디 리스트로 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByNovelIdList(@RequestParam("novelIdList") List<Long> novelIdList) {
         log.info("getNovelsByNovelIdList: {}", novelIdList);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelsByNovelIdList(novelIdList)), HttpStatus.OK);
@@ -69,7 +69,7 @@ public class NovelController {
     }
 
     @GetMapping("/find/authorId")
-    @ApiOperation(value = "이름으로 소설 목록 검색", notes = "소설 이름으로 소설 리스트를 검색한다.")
+    @ApiOperation(value = "작가 아이디로 작가의 소설 목록 검색", notes = "작가의 아이디로 작가의 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByAuthorId(@RequestParam("authorId") Long authorId,
                                                         @RequestParam("page") Integer page,
                                                         @RequestParam("size") Integer size) {

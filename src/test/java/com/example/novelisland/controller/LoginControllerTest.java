@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -46,6 +47,23 @@ class LoginControllerTest {
                 .build();
 
         log.info("테스트 DTO 생성완료");
+    }
+
+    @Test
+    @DisplayName("아이디 중복 체크 테스트 성공")
+    void testDuplicateCheck() throws Exception {
+        log.info("아이디 중복 체크 테스트 시작");
+
+        // given
+        given(loginService.duplicateCheck(loginDTO.getUserId())).willReturn(true);
+
+        // when & then
+        mockMvc.perform(get("/login/duplicateCheck")
+                        .param("userId", "test1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        log.info("아이디 중복 체크 테스트 종료");
     }
 
     @Test

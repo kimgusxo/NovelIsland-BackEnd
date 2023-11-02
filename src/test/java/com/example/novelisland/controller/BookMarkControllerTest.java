@@ -43,7 +43,7 @@ class BookMarkControllerTest {
         page = 0;
         size = 10;
 
-        log.info("페이지 변수 설정완료");
+        log.info("페이지 변수 설정 완료");
     }
 
     @Test

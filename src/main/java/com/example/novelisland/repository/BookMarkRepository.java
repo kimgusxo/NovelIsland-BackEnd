@@ -15,7 +15,6 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Long> {
     Boolean existsByBookMarkId(Long bookMarkId);
     Boolean existsByUser_UserIndex(Long userIndex);
     Boolean existsByUser_UserIndexAndNovel_NovelId(Long userIndex, Long novelId);
-
-    List<BookMark> findByUser_UserIndex(Long userIndex, Pageable pageable);
     void deleteByBookMarkId(Long bookMarkId);
+    List<BookMark> findByUser_UserIndex(Long userIndex, Pageable pageable);
 }

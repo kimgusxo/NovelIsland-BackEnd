@@ -1,0 +1,6 @@
+version: '3'
+services:
+  backend:
+    image: my-backend-image
+    ports:
+      - '8081:8081'

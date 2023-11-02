@@ -16,12 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     Boolean existsByUserId(String userId);
     User findByUserIndex(Long userIndex);
     User findByUserId(String userId);
-
-    @Modifying
-    @Transactional
-    @Query("update User u set u.userPassword = :userPassword " +
-            "where u.userIndex in :userIndex")
-    void updateUser(@Param("userPassword") String userPassword,
-                            @Param("userIndex") Long userIndex);
-
 }

@@ -42,9 +42,59 @@ class NovelControllerTest {
         log.info("페이지 변수 설정");
 
         page = 0;
-        size = 10;
+        size = 32;
 
         log.info("페이지 변수 설정");
+    }
+
+    @Test
+    @DisplayName("랜덤 소설 검색 테스트 성공")
+    void testRandomNovels_성공() throws Exception {
+        log.info("랜덤 소설 검색 테스트 시작");
+
+        // given
+        given(novelService.getRandomNovels()).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/novel/get/random")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
+        log.info("랜덤 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("랭킹 소설 검색 테스트 성공")
+    void testRankingNovels_성공() throws Exception {
+        log.info("랭킹 소설 검색 테스트 시작");
+
+        // given
+        given(novelService.getRankingNovels()).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/novel/get/ranking")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        log.info("랭킹 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("정렬된 소설 검색 테스트 성공")
+    void testSortingNovels_성공() throws Exception {
+        log.info("정렬된 소설 검색 테스트 시작");
+
+        // given
+        given(novelService.getSortingNovels()).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/novel/get/sorting")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
+        log.info("정렬된 소설 검색 테스트 종료");
     }
 
     @Test
@@ -84,6 +134,51 @@ class NovelControllerTest {
     }
 
     @Test
+    @DisplayName("소설 아이디 리스트로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByNovelIdList_성공() throws Exception {
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+
+        // given
+        Long novelId = 1L;
+
+        List<Long> novelIdList = new ArrayList<>();
+        novelIdList.add(novelId);
+
+        given(novelService.getNovelsByNovelIdList(novelIdList)).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/novel/find/novelIdList")
+                        .param("novelIdList", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+    }
+
+    @Test
+    @DisplayName("소설 아이디 리스트로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByNovelIdList_실패() throws Exception {
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+
+        // given
+        Long novelId = 1L;
+
+        List<Long> novelIdList = new ArrayList<>();
+        novelIdList.add(novelId);
+
+        given(novelService.getNovelsByNovelIdList(novelIdList)).willThrow(new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN));
+
+        // when & then
+        mockMvc.perform(get("/novel/find/novelIdList")
+                        .param("novelIdList", "1")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+    }
+
+    @Test
     @DisplayName("소설 이름으로 소설 리스트 검색 테스트 성공")
     void testGetNovelsByNovelName_성공() throws Exception {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
@@ -96,7 +191,7 @@ class NovelControllerTest {
         mockMvc.perform(get("/novel/find/novelName")
                         .param("novelName", "test")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -116,11 +211,51 @@ class NovelControllerTest {
         mockMvc.perform(get("/novel/find/novelName")
                         .param("novelName", "test")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 
         log.info("소설 이름으로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("작가 아이디로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByAuthorId_성공() throws Exception {
+        log.info("작가 아이디로 소설 리스트 검색 테스트 시작");
+
+        // given
+        Long authorId = 1L;
+        given(novelService.getNovelsByAuthorId(authorId, page, size)).willReturn(new ArrayList<>());
+
+        // when & then
+        mockMvc.perform(get("/novel/find/authorId")
+                        .param("authorId", "1")
+                        .param("page", "0")
+                        .param("size", "32")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        log.info("작가 아이디로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("작가 아이디로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByAuthorId_실패() throws Exception {
+        log.info("작가 아이디로 소설 리스트 검색 테스트 시작");
+
+        // given
+        Long authorId = 1L;
+        given(novelService.getNovelsByAuthorId(authorId, page, size)).willThrow(new NotExistNovelException(ErrorCode.NOT_EXIST_NOVEL_TOKEN));
+
+        // when & then
+        mockMvc.perform(get("/novel/find/authorId")
+                        .param("authorId", "1")
+                        .param("page", "0")
+                        .param("size", "32")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        log.info("작가 아이디로 소설 리스트 검색 테스트 종료");
     }
 
     @Test
@@ -140,7 +275,7 @@ class NovelControllerTest {
                         .param("novelName", "가")
                         .param("tagIdList", "0")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -165,7 +300,7 @@ class NovelControllerTest {
                         .param("novelName", "가")
                         .param("tagIdList", "0")
                         .param("page", "0")
-                        .param("size", "10")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 

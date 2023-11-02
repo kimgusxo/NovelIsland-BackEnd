@@ -14,8 +14,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +35,24 @@ class NovelServiceTest {
 
     private Novel novel;
     private Pageable pageable;
+    private Pageable sortingPageable;
 
     private int page;
     private int size;
 
     @BeforeEach
     void setUp() {
+        log.info("페이지 설정");
+
+        page = 0;
+        size = 32;
+        Sort sort = Sort.by(Sort.Order.asc("novelName"));
+
+        pageable = PageRequest.of(page, size);
+        sortingPageable = PageRequest.of(page, size, sort);
+
+        log.info("페이지 설정 완료");
+
         log.info("테스트 DTO 생성");
         
         Long novelId = 1L;
@@ -64,12 +75,74 @@ class NovelServiceTest {
                 .novelExplanation(novelExplanation)
                 .build();
 
-        page = 0;
-        size = 10;
-
-        pageable = PageRequest.of(page, size);
-
         log.info("테스트 DTO 생성완료");
+    }
+
+    @Test
+    @DisplayName("랜덤 소설 검색 테스트 성공")
+    void testGetRandomNovels_성공() {
+        log.info("랜덤 소설 검색 테스트 시작");
+
+        // given
+        List<Novel> novelList = new ArrayList<>();
+        novelList.add(novel);
+
+        when(novelRepository.findThreeNovelsByRandom()).thenReturn(novelList);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getRandomNovels();
+
+        // then
+        assertThat(novelDTOList)
+                .isNotEmpty();
+
+        log.info("랜덤 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("랭킹 소설 검색 테스트 성공")
+    void testGetRankingNovels_성공() {
+        log.info("랭킹 소설 검색 테스트 시작");
+
+        // given
+        List<Novel> novelList = new ArrayList<>();
+        novelList.add(novel);
+
+        Page<Novel> novelPage = new PageImpl<>(novelList);
+
+        when(novelRepository.findAll(pageable)).thenReturn(novelPage);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getRankingNovels();
+
+        // then
+        assertThat(novelDTOList)
+                .isNotEmpty();
+
+        log.info("랭킹 소설 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("정렬된 소설 검색 테스트 성공")
+    void testGetSortingNovels_성공() {
+        log.info("정렬된 소설 검색 테스트 시작");
+
+        // given
+        List<Novel> novelList = new ArrayList<>();
+        novelList.add(novel);
+
+        Page<Novel> novelPage = new PageImpl<>(novelList);
+
+        when(novelRepository.findAll(sortingPageable)).thenReturn(novelPage);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getSortingNovels();
+
+        // then
+        assertThat(novelDTOList)
+                .isNotEmpty();
+
+        log.info("정렬된 소설 검색 테스트 종료");
     }
 
     @Test
@@ -108,6 +181,49 @@ class NovelServiceTest {
     }
 
     @Test
+    @DisplayName("소설 아이디 리스트로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByNovelIdList_성공() {
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+
+        // given
+        List<Long> novelIdList = new ArrayList<>();
+        novelIdList.add(novel.getNovelId());
+
+        when(novelRepository.existsByNovelId(novel.getNovelId())).thenReturn(true);
+        when(novelRepository.findByNovelId(novel.getNovelId())).thenReturn(novel);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getNovelsByNovelIdList(novelIdList);
+
+        // then
+        assertThat(novelDTOList)
+                .isNotEmpty();
+
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("소설 아이디 리스트로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByNovelIdList_실패() {
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 시작");
+
+        // given
+        List<Long> novelIdList = new ArrayList<>();
+        novelIdList.add(novel.getNovelId());
+
+        when(novelRepository.existsByNovelId(novel.getNovelId())).thenReturn(false);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getNovelsByNovelIdList(novelIdList);
+
+        // then
+        assertThat(novelDTOList)
+                .isNull();
+
+        log.info("소설 아이디 리스트로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
     @DisplayName("소설 이름으로 소설 리스트 검색 테스트 성공")
     void testGetNovelsByNovelName_성공() {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
@@ -142,6 +258,48 @@ class NovelServiceTest {
                 .isInstanceOf(NotExistNovelException.class);
 
         log.info("소설 이름으로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("작가 아이디로 소설 리스트 검색 테스트 성공")
+    void testGetNovelsByAuthorId_성공() {
+        log.info("작가 아이디로 소설 리스트 검색 테스트 시작");
+
+        // given
+        List<Novel> novelList = new ArrayList<>();
+        novelList.add(novel);
+
+        when(novelRepository.findByAuthor_AuthorId(novel.getAuthor().getAuthorId(), pageable))
+                .thenReturn(novelList);
+
+        // when
+        List<NovelDTO> novelDTOList = novelService.getNovelsByAuthorId(novel.getAuthor().getAuthorId(), page, size);
+
+        // then
+        assertThat(novelDTOList)
+                .isNotEmpty();
+
+        log.info("작가 아이디로 소설 리스트 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("작가 아이디로 소설 리스트 검색 테스트 실패")
+    void testGetNovelsByAuthorId_실패() {
+        log.info("작가 아이디로 소설 리스트 검색 테스트 시작");
+
+        // given
+        List<Novel> novelList = new ArrayList<>();
+
+        when(novelRepository.findByAuthor_AuthorId(novel.getAuthor().getAuthorId(), pageable))
+                .thenReturn(novelList);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> novelService.getNovelsByAuthorId(novel.getAuthor().getAuthorId(), page, size))
+                .isInstanceOf(NotExistNovelException.class);
+
+        log.info("작가 아이디로 소설 리스트 검색 테스트 종료");
     }
 
     @Test

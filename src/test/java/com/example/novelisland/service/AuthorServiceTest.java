@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,9 +33,22 @@ class AuthorServiceTest {
     private AuthorService authorService;
 
     private Author author;
+    private Pageable pageable;
+    private int page;
+    private int size;
 
     @BeforeEach
     void setUp() {
+        log.info("페이지 설정");
+
+        page = 0;
+        size = 32;
+        Sort sort = Sort.by(Sort.Order.asc("authorName"));
+
+        pageable = PageRequest.of(page, size, sort);
+
+        log.info("페이지 설정 완료");
+
         log.info("테스트 DTO 생성");
 
         Long authorId = 1L;
@@ -48,6 +62,50 @@ class AuthorServiceTest {
                 .build();
 
         log.info("테스트 DTO 생성완료");
+    }
+
+    // 매개변수 page랑 size 받는걸로 수정해야 함
+    @Test
+    @DisplayName("정렬된 작가 검색 테스트 성공")
+    void testGetSortingAuthor_성공() {
+        log.info("정렬된 작가 검색 테스트 시작");
+
+        // given
+        List<Author> authorList = new ArrayList<>();
+        authorList.add(author);
+
+        Page<Author> authorPage = new PageImpl<>(authorList);
+
+        when(authorRepository.findAll(pageable)).thenReturn(authorPage);
+
+        // when
+        List<AuthorDTO> authorDTOList = authorService.getSortingAuthor();
+
+        // then
+        assertThat(authorDTOList)
+                .isNotEmpty();
+
+        log.info("정렬된 작가 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("정렬된 작가 검색 테스트 실패")
+    void testGetSortingAuthor_실패() {
+        log.info("정렬된 작가 검색 테스트 시작");
+
+        // given
+        List<Author> authorList = new ArrayList<>();
+        Page<Author> authorPage = new PageImpl<>(authorList);
+
+        when(authorRepository.findAll(pageable)).thenReturn(authorPage);
+
+        // when
+
+        // then
+        assertThatThrownBy(() -> authorService.getSortingAuthor())
+                .isInstanceOf(NotExistAuthorException.class);
+
+        log.info("정렬된 작가 검색 테스트 종료");
     }
 
     @Test
@@ -92,14 +150,16 @@ class AuthorServiceTest {
         log.info("작가 이름으로 작가 검색 테스트 시작");
 
         // given
-        when(authorRepository.existsByAuthorName(author.getAuthorName())).thenReturn(true);
-        when(authorRepository.findByAuthorName(author.getAuthorName())).thenReturn(author);
+        List<Author> authorList = new ArrayList<>();
+        authorList.add(author);
+
+        when(authorRepository.findByAuthorNameContaining(author.getAuthorName(), pageable)).thenReturn(authorList);
 
         // when
-        AuthorDTO authorDTO = authorService.getAuthorByAuthorName(author.getAuthorName());
+        List<AuthorDTO> authorDTOList = authorService.getAuthorByAuthorName(author.getAuthorName(), page, size);
 
         // then
-        assertThat(authorDTO).isNotNull();
+        assertThat(authorDTOList).isNotNull();
 
         log.info("작가 이름으로 작가 검색 테스트 종료");
     }
@@ -110,12 +170,13 @@ class AuthorServiceTest {
         log.info("작가 이름으로 작가 검색 테스트 시작");
 
         // given
-        when(authorRepository.existsByAuthorName(author.getAuthorName())).thenReturn(false);
+        List<Author> authorList = new ArrayList<>();
+        when(authorRepository.findByAuthorNameContaining(author.getAuthorName(), pageable)).thenReturn(authorList);
 
         // when
 
         // then
-        assertThatThrownBy(() -> authorService.getAuthorByAuthorName(author.getAuthorName()))
+        assertThatThrownBy(() -> authorService.getAuthorByAuthorName(author.getAuthorName(), page, size))
                 .isInstanceOf(NotExistAuthorException.class);
 
         log.info("작가 이름으로 작가 검색 테스트 종료");

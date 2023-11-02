@@ -41,8 +41,12 @@ public class AuthorService {
 
         List<AuthorDTO> authorDTOList = new ArrayList<>();
 
-        for(Author author : authorList) {
-            authorDTOList.add(author.toDTO());
+        if(authorList.isEmpty()) {
+            throw new NotExistAuthorException(ErrorCode.NOT_EXIST_AUTHOR_TOKEN);
+        } else {
+            for(Author author : authorList) {
+                authorDTOList.add(author.toDTO());
+            }
         }
 
         return authorDTOList;
@@ -70,7 +74,6 @@ public class AuthorService {
         List<AuthorDTO> authorDTOList = new ArrayList<>();
 
         if(authorList.isEmpty()) {
-            // 해당하는 소설이 없을 때 예외처리
             throw new NotExistAuthorException(ErrorCode.NOT_EXIST_AUTHOR_TOKEN);
         } else {
             for(Author author : authorList) {

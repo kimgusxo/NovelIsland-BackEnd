@@ -25,7 +25,7 @@ public class TagController {
     }
 
     @GetMapping("/get/sorting")
-    @ApiOperation(value = "태그 아이디로 소설검색", notes = "해당 태그의 소설 리스트를 검색한다.")
+    @ApiOperation(value = "정렬된 태그 리스트 검색", notes = "정렬된 태그 리스트를 검색한다.")
     public ResponseEntity<Message> getSortingTags() {
         log.info("getSortingTags");
         return new ResponseEntity<>(Message.of("소설 리스트 검색 성공", HttpStatus.OK.value(), tagService.getSortingTags()), HttpStatus.OK);

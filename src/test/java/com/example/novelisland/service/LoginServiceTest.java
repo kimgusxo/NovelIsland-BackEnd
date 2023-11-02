@@ -50,13 +50,48 @@ class LoginServiceTest {
     }
 
     @Test
+    @DisplayName("아이디 중복 체크 테스트 성공")
+    void testDuplicateCheck_성공() {
+        log.info("아이디 중복 체크 테스트 시작");
+
+        // given
+        when(userRepository.existsByUserId(loginDTO.getUserId())).thenReturn(true);
+
+        // when
+        Boolean token = loginService.duplicateCheck(loginDTO.getUserId());
+
+        // then
+        assertThat(token)
+                .isTrue();
+
+        log.info("아이디 중복 체크 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("아이디 중복 체크 테스트 실패")
+    void testDuplicateCheck_실패() {
+        log.info("아이디 중복 체크 테스트 시작");
+
+        // given
+        when(userRepository.existsByUserId(loginDTO.getUserId())).thenReturn(false);
+
+        // when
+        Boolean token = loginService.duplicateCheck(loginDTO.getUserId());
+
+        // then
+        assertThat(token)
+                .isFalse();
+
+        log.info("아이디 중복 체크 테스트 종료");
+    }
+    
+    @Test
     @DisplayName("새로운 사용자로 회원가입 테스트")
     void testSignUp_새로운사용자() {
         log.info("새로운 사용자로 회원가입 테스트 시작");
 
         // given
         User resultUser = User.builder()
-                .userIndex(1L)
                 .userId(loginDTO.getUserId())
                 .userPassword(loginDTO.getUserPassword())
                 .build();
@@ -101,7 +136,6 @@ class LoginServiceTest {
         when(userRepository.existsByUserId(loginDTO.getUserId())).thenReturn(true);
 
         User resultUser = User.builder()
-                .userIndex(16973L)
                 .userId(loginDTO.getUserId())
                 .userPassword(loginDTO.getUserPassword())
                 .build();
@@ -143,7 +177,6 @@ class LoginServiceTest {
         when(userRepository.existsByUserId(loginDTO.getUserId())).thenReturn(true);
 
         User resultUser = User.builder()
-                .userIndex(1L)
                 .userId(loginDTO.getUserId())
                 .userPassword("1234")
                 .build();

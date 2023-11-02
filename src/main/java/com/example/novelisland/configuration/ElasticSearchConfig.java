@@ -1,6 +1,7 @@
 //package com.example.novelisland.configuration;
 //
 //import org.elasticsearch.client.RestHighLevelClient;
+//import org.elasticsearch.index.analysis.AnalysisRegistry;
 //import org.springframework.context.annotation.Bean;
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.data.elasticsearch.client.ClientConfiguration;
@@ -22,4 +23,5 @@
 //    public ElasticsearchRestTemplate elasticsearchTemplate() {
 //        return new ElasticsearchRestTemplate(client());
 //    }
+//
 //}

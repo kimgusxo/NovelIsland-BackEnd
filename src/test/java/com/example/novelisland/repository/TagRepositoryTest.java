@@ -1,6 +1,7 @@
 package com.example.novelisland.repository;
 
 import com.example.novelisland.domain.Novel;
+import com.example.novelisland.domain.Tag;
 import com.example.novelisland.projection.NovelSummary;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,11 @@ class TagRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        log.info("페이지 설정");
+
         pageable = PageRequest.of(0, 10);
+
+        log.info("페이지 설정 완료");
     }
 
     @Test
@@ -44,7 +49,7 @@ class TagRepositoryTest {
         log.info("태그 아이디로 태그의 존재유무 테스트 시작");
         
         // given
-        Long tagId = 1L;
+        Long tagId = 4764L;
 
         // when
         Boolean token = tagRepository.existsByTagId(tagId);
@@ -76,10 +81,54 @@ class TagRepositoryTest {
 
         log.info("태그 아이디로 태그의 존재유무 테스트 종료");
     }
-    
+
     @Test
     @DisplayName("태그 아이디로 태그 검색 테스트")
-    void testFindNovelListById() {
+    void testFindByTagId() {
+        log.info("태그 아이디로 태그 검색 테스트 시작");
+
+        // given
+        Long tagId = 4764L;
+
+        // when
+        Tag tag = tagRepository.findByTagId(tagId);
+
+        // then
+        assertThat(tag)
+                .as("태그가 존재하지 않습니다.")
+                .isNotNull();
+
+        System.out.println(tag.getTagId());
+        System.out.println(tag.getTagClassification());
+
+        log.info("태그 아이디로 태그 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 이름으로 태그 검색 테스트")
+    void testFindByTagClassification() {
+        log.info("태그 이름으로 태그 검색 테스트 시작");
+
+        // given
+        String tagClassification = "판타지";
+
+        // when
+        Tag tag = tagRepository.findByTagClassification(tagClassification);
+
+        // then
+        assertThat(tag)
+                .as("태그가 존재하지 않습니다.")
+                .isNotNull();
+
+        System.out.println(tag.getTagId());
+        System.out.println(tag.getTagClassification());
+
+        log.info("태그 이름으로 태그 검색 테스트 종료");
+    }
+
+    @Test
+    @DisplayName("태그 아이디로 태그 검색 테스트")
+    void testFindNovelsById() {
         log.info("태그 아이디로 태그 검색 테스트 시작");
         
         // given
@@ -109,7 +158,7 @@ class TagRepositoryTest {
 
     @Test
     @DisplayName("태그 이름으로 태그 검색 테스트")
-    void testFindNovelListByClassification() {
+    void testFindNovelsByClassification() {
         log.info("태그 이름으로 태그 검색 테스트 시작");
 
         // given

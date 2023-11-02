@@ -3,6 +3,7 @@
 //import com.example.novelisland.document.ElasticSearchNovel;
 //import com.example.novelisland.repository.ElasticSearchNovelRepository;
 //import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 //import org.springframework.web.bind.annotation.*;
 //
 //import java.util.List;
@@ -38,5 +39,10 @@
 //        }
 //
 //        return elasticSearchNovels;
+//    }
+//
+//    @GetMapping("/get/novelExplanation")
+//    public ElasticSearchNovel getNovelByNovelExplanation(@RequestParam("novelExplanation") String novelExplanation) {
+//
 //    }
 //}

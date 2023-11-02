@@ -34,7 +34,7 @@ class UserRepositoryTest {
         log.info("테스트 유저 생성중");
 
         user = User.builder()
-                .userId("Test1")
+                .userId("Test")
                 .userPassword("123")
                 .build();
 
@@ -62,14 +62,34 @@ class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("유저 인덱스로 유저의 존재여부 확인 테스트")
+    void testExistsByUserIndex() {
+        log.info("유저 인덱스로 유저의 존재여부 확인 테스트 시작");
+
+        // given
+        Long userIndex = 16945L;
+
+        // when
+        Boolean token = userRepository.existsByUserIndex(userIndex);
+
+        // then
+        assertThat(token)
+                .as("유저가 존재하지 않습니다.")
+                .isTrue();
+
+        log.info("유저 인덱스로 유저의 존재여부 확인 테스트 종료");
+    }
+
+    @Test
     @DisplayName("유저 아이디로 유저의 존재여부 확인 테스트")
     void testExistsByUserId() {
         log.info("유저 아이디로 유저의 존재여부 확인 테스트 시작");
 
         // given
+        String userId = "Test1";
 
         // when
-        Boolean token = userRepository.existsByUserId(user.getUserId());
+        Boolean token = userRepository.existsByUserId(userId);
 
         // then
         assertThat(token)
@@ -80,14 +100,38 @@ class UserRepositoryTest {
     }
 
     @Test
+    @DisplayName("유저 인덱스로 유저 검색 테스트")
+    void testFindUserByIndex() {
+        log.info("유저 인덱스로 유저 검색 테스트 시작");
+
+        // given
+        Long userIndex = 16945L;
+
+        // when
+        User findUser = userRepository.findByUserIndex(userIndex);
+
+        // then
+        assertThat(findUser)
+                .as("유저가 존재하지 않습니다.")
+                .isNotNull();
+
+        System.out.println("유저 인덱스: " + findUser.getUserIndex());
+        System.out.println("유저 아이디: " + findUser.getUserId());
+        System.out.println("유저 비밀번호: " + findUser.getUserPassword());
+
+        log.info("유저 인덱스로 유저 검색 테스트 종료");
+    }
+
+    @Test
     @DisplayName("유저 아이디로 유저 검색 테스트")
     void testFindUserById() {
         log.info("유저 아이디로 유저 검색 테스트 시작");
 
         // given
+        String userId = "Test1";
 
         // when
-        User findUser = userRepository.findByUserId(user.getUserId());
+        User findUser = userRepository.findByUserId(userId);
 
         // then
         assertThat(findUser)

@@ -29,14 +29,38 @@ class BookMarkRepositoryTest {
 
     private Pageable pageable;
 
-    @BeforeEach
-    void setUp() {
-        pageable = PageRequest.of(0, 10);
-    }
-
     @Autowired
     public BookMarkRepositoryTest(BookMarkRepository bookMarkRepository) {
         this.bookMarkRepository = bookMarkRepository;
+    }
+
+    @BeforeEach
+    void setUp() {
+        log.info("페이지 설정");
+
+        pageable = PageRequest.of(0, 10);
+
+        log.info("페이지 설정 완료");
+    }
+
+
+    @Test
+    @DisplayName("북마크 존재유무 테스트")
+    void testExistsByBookMarkIndex() {
+        log.info("북마크 존재유무 테스트 시작");
+
+        // given
+        Long bookMarkId = 17070L;
+
+        // when
+        Boolean token = bookMarkRepository.existsByBookMarkId(bookMarkId);
+
+        // then
+        assertThat(token)
+                .as("북마크가 존재하지 않습니다.")
+                .isTrue();
+
+        log.info("북마크 존재유무 테스트 종료");
     }
 
     @Test
@@ -109,7 +133,6 @@ class BookMarkRepositoryTest {
 
     // delete 문은 실제로 DB의 값의 영향을 줘 SpringBootTest로 진행해야 함
     @Test
-    @Transactional
     @DisplayName("유저의 북마크 해제 테스트")
     void testDeleteBookMark() {
         log.info("유저의 북마크 해제 테스트 시작");
