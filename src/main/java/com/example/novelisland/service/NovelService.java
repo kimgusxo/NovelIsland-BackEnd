@@ -42,7 +42,7 @@ public class NovelService {
     @Transactional
     public List<NovelDTO> getRankingNovels() {
         int page = 0;
-        int size = 32;
+        int size = 40;
 
         // Paging 설정
         Pageable pageable = PageRequest.of(page, size);

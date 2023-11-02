@@ -31,7 +31,7 @@ public class AuthorService {
     @Transactional
     public List<AuthorDTO> getSortingAuthor() {
         int page = 0;
-        int size = 32;
+        int size = 24;
 
         // Paging 설정
         Sort sort = Sort.by(Sort.Order.asc("authorName"));
