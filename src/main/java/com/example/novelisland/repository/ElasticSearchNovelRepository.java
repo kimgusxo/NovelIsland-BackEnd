@@ -1,16 +1,15 @@
 package com.example.novelisland.repository;
 
 import com.example.novelisland.document.ElasticSearchNovel;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.annotations.Query;
 import org.springframework.data.elasticsearch.repository.ElasticsearchRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
 public interface ElasticSearchNovelRepository extends ElasticsearchRepository<ElasticSearchNovel, Long> {
-
-    List<ElasticSearchNovel> findAll();
-    Page<ElasticSearchNovel> findAll(Pageable pageable);
-    List<ElasticSearchNovel> findByNovelExplanationContaining(String novelExplanation);
+    @Query("{\"multi_match\": {\"query\": \"?0\", \"fields\": [\"novel_name\", \"novel_explanation\"]}}")
+    List<ElasticSearchNovel> findElasticNovelsByNovelExplanation(@Param("novel_explanation") String novelExplanation, Pageable pageable);
 
 }

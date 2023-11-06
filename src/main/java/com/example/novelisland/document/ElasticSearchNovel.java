@@ -18,6 +18,11 @@ public class ElasticSearchNovel {
     @Id
     @Field(name = "novel_id", type = FieldType.Long)
     private Long novelId;
+
+    @Field(name = "novel_name", type = FieldType.Text, analyzer = "nori")
+    private String novelName;
+
     @Field(name = "novel_explanation", type = FieldType.Text, analyzer = "nori")
     private String novelExplanation;
+
 }

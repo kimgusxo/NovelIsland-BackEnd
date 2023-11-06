@@ -29,7 +29,7 @@ public class Novel {
     @Column(name = "NOVEL_NAME")
     private String novelName;
 
-    @Column(name = "NOVEL_THUMBNAIL")
+    @Column(name = "NOVEL_THUMBNAIL", columnDefinition = "TEXT")
     private String novelThumbNail;
 
     @NotNull

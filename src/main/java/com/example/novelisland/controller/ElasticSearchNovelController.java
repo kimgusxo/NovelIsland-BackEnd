@@ -1,69 +1,29 @@
 package com.example.novelisland.controller;
 
-import com.example.novelisland.document.ElasticSearchNovel;
-import com.example.novelisland.domain.Novel;
-import com.example.novelisland.repository.ElasticSearchNovelRepository;
-import com.example.novelisland.repository.NovelRepository;
+import com.example.novelisland.dto.NovelDTO;
+import com.example.novelisland.format.Message;
+import com.example.novelisland.service.ElasticSearchNovelService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/elastic")
 public class ElasticSearchNovelController {
 
-    private final ElasticSearchNovelRepository elasticSearchNovelRepository;
-    private final NovelRepository novelRepository;
+    private final ElasticSearchNovelService elasticSearchNovelService;
 
     @Autowired
-    public ElasticSearchNovelController(ElasticSearchNovelRepository elasticSearchNovelRepository,
-                                        NovelRepository novelRepository) {
-        this.elasticSearchNovelRepository = elasticSearchNovelRepository;
-        this.novelRepository = novelRepository;
+    public ElasticSearchNovelController(ElasticSearchNovelService elasticSearchNovelService) {
+        this.elasticSearchNovelService = elasticSearchNovelService;
     }
 
-    @GetMapping("/move")
-    public void move() {
-        List<Novel> novelList = novelRepository.findAll();
-
-        for(Novel novel : novelList) {
-            ElasticSearchNovel elasticSearchNovel = ElasticSearchNovel.builder()
-                                .novelId(novel.getNovelId())
-                                .novelExplanation(novel.getNovelExplanation())
-                                .build();
-            elasticSearchNovelRepository.save(elasticSearchNovel);
-        }
-    }
-
-    @PostMapping("/insert")
-    public ElasticSearchNovel insertNovel() {
-        ElasticSearchNovel novel = ElasticSearchNovel.builder()
-                .novelId(2L)
-                .novelExplanation("안녕하세요.")
-                .build();
-        novel = elasticSearchNovelRepository.save(novel);
-        return novel;
-    }
-
-    @GetMapping("/get")
-    public List<ElasticSearchNovel> getNovels() {
-        Pageable pageable = PageRequest.of(0, 1000);
-
-        List<ElasticSearchNovel> elasticSearchNovels = elasticSearchNovelRepository.findAll(pageable).getContent();
-
-        for(ElasticSearchNovel elasticSearchNovel : elasticSearchNovels) {
-            System.out.println(elasticSearchNovel);
-        }
-
-        return elasticSearchNovels;
-    }
-
-    @GetMapping("/get/novelExplanation")
-    public List<ElasticSearchNovel> getNovelByNovelExplanation(@RequestParam("novelExplanation") String novelExplanation) {
-        return elasticSearchNovelRepository.findByNovelExplanationContaining(novelExplanation);
+    @GetMapping("/find/result")
+    public ResponseEntity<Message> getNovelsByNovelExplanation(@RequestParam("novelExplanation") String novelExplanation) {
+        log.info("getNovelByNovelExplanation: {}", novelExplanation);
+        return new ResponseEntity<>(Message.of("소설 검색 성공", HttpStatus.OK.value(),
+                elasticSearchNovelService.getElasticNovelsByNovelExplanation(novelExplanation)), HttpStatus.OK);
     }
 }

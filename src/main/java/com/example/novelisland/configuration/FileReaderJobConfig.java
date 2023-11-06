@@ -23,7 +23,7 @@ public class FileReaderJobConfig {
     private final CsvReader csvReader;
     private final CsvWriter csvWriter;
 
-    private static final int chunkSize = 12172;
+    private static final int chunkSize = 62443;
 
     @Bean
     public Job csvFileReaderJob() {
