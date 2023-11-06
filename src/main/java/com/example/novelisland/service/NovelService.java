@@ -45,7 +45,8 @@ public class NovelService {
         int size = 40;
 
         // Paging 설정
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Order.asc("novelId"));
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Novel> novelList = novelRepository.findAll(pageable);
 
@@ -114,7 +115,8 @@ public class NovelService {
     @Transactional
     public List<NovelDTO> getNovelsByNovelName(String novelName, int page, int size) {
         // Paging 설정
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Order.asc("novelId"));
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         List<Novel> novelList = novelRepository.findByNovelNameContaining(novelName, pageable);
 
@@ -154,7 +156,8 @@ public class NovelService {
     @Transactional
     public List<NovelDTO> getNovelsByNovelNameContainingAndTagIdList(String novelName, List<Long> tagIdList, int page, int size) {
         // paging 설정
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = Sort.by(Sort.Order.asc("novelId"));
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         List<Novel> novelList = novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable);
 
