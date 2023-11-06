@@ -40,9 +40,7 @@ public class NovelService {
     }
 
     @Transactional
-    public List<NovelDTO> getRankingNovels() {
-        int page = 0;
-        int size = 40;
+    public List<NovelDTO> getRankingNovels(int page, int size) {
 
         // Paging 설정
         Sort sort = Sort.by(Sort.Order.asc("novelId"));
@@ -60,9 +58,7 @@ public class NovelService {
     }
 
     @Transactional
-    public List<NovelDTO> getSortingNovels() {
-        int page = 0;
-        int size = 32;
+    public List<NovelDTO> getSortingNovels(int page, int size) {
 
         // Paging 설정
         Sort sort = Sort.by(Sort.Order.asc("novelName"));
