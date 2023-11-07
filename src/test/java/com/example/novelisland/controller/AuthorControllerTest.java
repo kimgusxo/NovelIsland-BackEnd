@@ -55,10 +55,12 @@ class AuthorControllerTest {
         List<AuthorDTO> authorDTOList = new ArrayList<>();
         authorDTOList.add(new AuthorDTO());
 
-        given(authorService.getSortingAuthor()).willReturn(authorDTOList);
+        given(authorService.getSortingAuthor(page, size)).willReturn(authorDTOList);
 
         // when & then
         mockMvc.perform(get("/author/get/sorting")
+                        .param("page", "0")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -72,10 +74,12 @@ class AuthorControllerTest {
         log.info("정렬된 작가 검색 테스트 시작");
 
         // given
-        given(authorService.getSortingAuthor()).willThrow(new NotExistAuthorException(ErrorCode.NOT_EXIST_AUTHOR_TOKEN));
+        given(authorService.getSortingAuthor(page, size)).willThrow(new NotExistAuthorException(ErrorCode.NOT_EXIST_AUTHOR_TOKEN));
 
         // when & then
         mockMvc.perform(get("/author/get/sorting")
+                        .param("page", "0")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
 

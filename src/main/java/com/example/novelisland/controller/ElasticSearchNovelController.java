@@ -1,6 +1,5 @@
 package com.example.novelisland.controller;
 
-import com.example.novelisland.dto.NovelDTO;
 import com.example.novelisland.format.Message;
 import com.example.novelisland.service.ElasticSearchNovelService;
 import lombok.extern.slf4j.Slf4j;

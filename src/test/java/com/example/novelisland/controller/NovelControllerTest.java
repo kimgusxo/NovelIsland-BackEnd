@@ -70,10 +70,12 @@ class NovelControllerTest {
         log.info("랭킹 소설 검색 테스트 시작");
 
         // given
-        given(novelService.getRankingNovels()).willReturn(new ArrayList<>());
+        given(novelService.getRankingNovels(page, size)).willReturn(new ArrayList<>());
 
         // when & then
         mockMvc.perform(get("/novel/get/ranking")
+                        .param("page", "0")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
@@ -86,10 +88,12 @@ class NovelControllerTest {
         log.info("정렬된 소설 검색 테스트 시작");
 
         // given
-        given(novelService.getSortingNovels()).willReturn(new ArrayList<>());
+        given(novelService.getSortingNovels(page, size)).willReturn(new ArrayList<>());
 
         // when & then
         mockMvc.perform(get("/novel/get/sorting")
+                        .param("page", "0")
+                        .param("size", "32")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 

@@ -79,7 +79,7 @@ class AuthorServiceTest {
         when(authorRepository.findAll(pageable)).thenReturn(authorPage);
 
         // when
-        List<AuthorDTO> authorDTOList = authorService.getSortingAuthor();
+        List<AuthorDTO> authorDTOList = authorService.getSortingAuthor(page, size);
 
         // then
         assertThat(authorDTOList)
@@ -102,7 +102,7 @@ class AuthorServiceTest {
         // when
 
         // then
-        assertThatThrownBy(() -> authorService.getSortingAuthor())
+        assertThatThrownBy(() -> authorService.getSortingAuthor(page, size))
                 .isInstanceOf(NotExistAuthorException.class);
 
         log.info("정렬된 작가 검색 테스트 종료");
@@ -142,7 +142,6 @@ class AuthorServiceTest {
 
         log.info("작가 아이디로 작가 검색 테스트 종료");
     }
-
 
     @Test
     @DisplayName("작가 이름으로 작가 검색 테스트 성공")

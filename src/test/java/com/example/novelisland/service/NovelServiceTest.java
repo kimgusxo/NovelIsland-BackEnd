@@ -113,7 +113,7 @@ class NovelServiceTest {
         when(novelRepository.findAll(pageable)).thenReturn(novelPage);
 
         // when
-        List<NovelDTO> novelDTOList = novelService.getRankingNovels();
+        List<NovelDTO> novelDTOList = novelService.getRankingNovels(page, size);
 
         // then
         assertThat(novelDTOList)
@@ -136,7 +136,7 @@ class NovelServiceTest {
         when(novelRepository.findAll(sortingPageable)).thenReturn(novelPage);
 
         // when
-        List<NovelDTO> novelDTOList = novelService.getSortingNovels();
+        List<NovelDTO> novelDTOList = novelService.getSortingNovels(page, size);
 
         // then
         assertThat(novelDTOList)
