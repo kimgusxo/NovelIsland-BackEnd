@@ -35,7 +35,8 @@ class NovelServiceTest {
 
     private Novel novel;
     private Pageable pageable;
-    private Pageable sortingPageable;
+    private Pageable novelNameSortingPageable;
+    private Pageable novelIdSortingPageable;
 
     private int page;
     private int size;
@@ -46,10 +47,12 @@ class NovelServiceTest {
 
         page = 0;
         size = 32;
-        Sort sort = Sort.by(Sort.Order.asc("novelName"));
+        Sort novelNameSort = Sort.by(Sort.Order.asc("novelName"));
+        Sort novelIdSort = Sort.by(Sort.Order.asc("novelId"));
 
         pageable = PageRequest.of(page, size);
-        sortingPageable = PageRequest.of(page, size, sort);
+        novelNameSortingPageable = PageRequest.of(page, size, novelNameSort);
+        novelIdSortingPageable = PageRequest.of(page, size, novelIdSort);
 
         log.info("페이지 설정 완료");
 
@@ -110,7 +113,7 @@ class NovelServiceTest {
 
         Page<Novel> novelPage = new PageImpl<>(novelList);
 
-        when(novelRepository.findAll(pageable)).thenReturn(novelPage);
+        when(novelRepository.findAll(novelIdSortingPageable)).thenReturn(novelPage);
 
         // when
         List<NovelDTO> novelDTOList = novelService.getRankingNovels(page, size);
@@ -133,7 +136,7 @@ class NovelServiceTest {
 
         Page<Novel> novelPage = new PageImpl<>(novelList);
 
-        when(novelRepository.findAll(sortingPageable)).thenReturn(novelPage);
+        when(novelRepository.findAll(novelNameSortingPageable)).thenReturn(novelPage);
 
         // when
         List<NovelDTO> novelDTOList = novelService.getSortingNovels(page, size);
@@ -232,7 +235,7 @@ class NovelServiceTest {
         List<Novel> novelList = new ArrayList<>();
         novelList.add(novel);
 
-        when(novelRepository.findByNovelNameContaining(novel.getNovelName(), pageable)).thenReturn(novelList);
+        when(novelRepository.findByNovelNameContaining(novel.getNovelName(), novelIdSortingPageable)).thenReturn(novelList);
 
         // when
         List<NovelDTO> novelDTOList = novelService.getNovelsByNovelName(novel.getNovelName(), page, size);
@@ -249,7 +252,7 @@ class NovelServiceTest {
         log.info("소설 이름으로 소설 리스트 검색 테스트 시작");
 
         // given
-        when(novelRepository.findByNovelNameContaining(novel.getNovelName(), pageable)).thenReturn(new ArrayList<>());
+        when(novelRepository.findByNovelNameContaining(novel.getNovelName(), novelIdSortingPageable)).thenReturn(new ArrayList<>());
 
         // when
 
@@ -316,7 +319,7 @@ class NovelServiceTest {
         List<Novel> novelList = new ArrayList<>();
         novelList.add(novel);
 
-        when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable)).thenReturn(novelList);
+        when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, novelIdSortingPageable)).thenReturn(novelList);
 
         // when
         List<NovelDTO> novelDTOList = novelService.getNovelsByNovelNameContainingAndTagIdList(novelName, tagIdList, page, size);
@@ -338,7 +341,7 @@ class NovelServiceTest {
         List<Long> tagIdList = new ArrayList<>();
         tagIdList.add(novel.getTag().getTagId());
 
-        when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, pageable)).thenReturn(new ArrayList<>());
+        when(novelRepository.findByNovelNameContainingAndTagIdList(novelName, tagIdList, novelIdSortingPageable)).thenReturn(new ArrayList<>());
 
         // when
 

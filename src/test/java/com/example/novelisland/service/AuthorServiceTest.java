@@ -34,6 +34,7 @@ class AuthorServiceTest {
 
     private Author author;
     private Pageable pageable;
+    private Pageable sortingPageable;
     private int page;
     private int size;
 
@@ -45,7 +46,8 @@ class AuthorServiceTest {
         size = 32;
         Sort sort = Sort.by(Sort.Order.asc("authorName"));
 
-        pageable = PageRequest.of(page, size, sort);
+        pageable = PageRequest.of(page, size);
+        sortingPageable = PageRequest.of(page, size, sort);
 
         log.info("페이지 설정 완료");
 
@@ -76,7 +78,7 @@ class AuthorServiceTest {
 
         Page<Author> authorPage = new PageImpl<>(authorList);
 
-        when(authorRepository.findAll(pageable)).thenReturn(authorPage);
+        when(authorRepository.findAll(sortingPageable)).thenReturn(authorPage);
 
         // when
         List<AuthorDTO> authorDTOList = authorService.getSortingAuthor(page, size);
@@ -97,7 +99,7 @@ class AuthorServiceTest {
         List<Author> authorList = new ArrayList<>();
         Page<Author> authorPage = new PageImpl<>(authorList);
 
-        when(authorRepository.findAll(pageable)).thenReturn(authorPage);
+        when(authorRepository.findAll(sortingPageable)).thenReturn(authorPage);
 
         // when
 
