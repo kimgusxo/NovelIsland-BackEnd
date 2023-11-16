@@ -30,6 +30,9 @@ public class User {
     @Column(name = "USER_PASSWORD")
     private String userPassword;
 
+    @Column(name = "REFRESH_TOKEN")
+    private String refreshToken;
+
     @OneToMany(mappedBy = "user")
     private List<BookMark> bookMarkList;
 

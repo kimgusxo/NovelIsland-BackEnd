@@ -17,5 +17,4 @@ public class DeduplicationUtils {
         final Set<Object> set = ConcurrentHashMap.newKeySet();
         return predicate -> set.add(key.apply(predicate));
     }
-
 }

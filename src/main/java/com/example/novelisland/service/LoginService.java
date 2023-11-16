@@ -45,15 +45,24 @@ public class LoginService {
             // 아이디 중복 예외처리
             throw new DuplicateIdException(ErrorCode.DUPLICATE_ID_TOKEN);
         } else {
-            User user = userRepository.save(loginDTO.toEntity());
+            User user = User.builder()
+                    .userId(loginDTO.getUserId())
+                    .userPassword(loginDTO.getUserPassword())
+                    .build();
 
             String jwtToken = jwtTokenProvider.createToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+            String refreshJwtToken = jwtTokenProvider.createRefreshToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+
+            user.setRefreshToken(refreshJwtToken);
+
+            userRepository.save(user);
 
             return TokenDTO.builder()
                     .userIndex(user.getUserIndex())
                     .userId(user.getUserId())
                     .userPassword(user.getUserPassword())
                     .jwtToken(jwtToken)
+                    .refreshJwtToken(refreshJwtToken)
                     .build();
         }
     }
@@ -66,13 +75,20 @@ public class LoginService {
         if(token) {
             User user = userRepository.findByUserId(loginDTO.getUserId());
             if(user.getUserPassword().equals(loginDTO.getUserPassword())) {
+
                 String jwtToken = jwtTokenProvider.createToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+                String refreshJwtToken = jwtTokenProvider.createRefreshToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+
+                user.setRefreshToken(refreshJwtToken);
+
+                userRepository.save(user);
 
                 return TokenDTO.builder()
                         .userIndex(user.getUserIndex())
                         .userId(user.getUserId())
                         .userPassword(user.getUserPassword())
                         .jwtToken(jwtToken)
+                        .refreshJwtToken(refreshJwtToken)
                         .build();
             } else {
                 // 비밀번호가 잘못된 예외처리.
@@ -84,3 +100,4 @@ public class LoginService {
         }
     }
 }
+

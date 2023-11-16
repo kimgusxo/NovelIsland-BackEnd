@@ -11,13 +11,15 @@ public class TokenDTO {
     private String userId;
     private String userPassword;
     private String jwtToken;
+    private String refreshJwtToken;
 
     @Builder
-    public TokenDTO(Long userIndex, String userId, String userPassword, String jwtToken) {
+    public TokenDTO(Long userIndex, String userId, String userPassword, String jwtToken, String refreshJwtToken) {
         this.userIndex = userIndex;
         this.userId = userId;
         this.userPassword = userPassword;
         this.jwtToken = jwtToken;
+        this.refreshJwtToken = refreshJwtToken;
     }
 
 }
