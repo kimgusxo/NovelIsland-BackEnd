@@ -39,11 +39,12 @@ public class TokenController {
             Authentication auth = jwtTokenProvider.getAuthentication(newAccessToken);
             SecurityContextHolder.getContext().setAuthentication(auth);
 
-            System.out.println(newAccessToken);
-
-            return ResponseEntity.ok().header("Authorization", "Bearer " + newAccessToken).build();
+            return ResponseEntity.ok()
+                    .header("Authorization", "Bearer " + newAccessToken)
+                    .body(newAccessToken);
         }
 
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body("forbidden exception");
     }
 }
