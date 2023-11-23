@@ -42,5 +42,4 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
             httpResponse.getWriter().write(e.getErrorCode().getDetail());
         }
     }
-
 }

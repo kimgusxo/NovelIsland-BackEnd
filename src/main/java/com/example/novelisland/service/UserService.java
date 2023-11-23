@@ -24,7 +24,14 @@ public class UserService {
         Boolean token = userRepository.existsByUserIndex(userDTO.getUserIndex());
 
         if(token) {
-            User user = userRepository.save(userDTO.toEntity());
+            // 업데이트 시 리프레쉬 토큰 가져오기
+            String refreshToken = userRepository.findByUserIndex(userDTO.getUserIndex()).getRefreshToken();
+
+            User user = userDTO.toEntity();
+            user.setRefreshToken(refreshToken);
+
+            user = userRepository.save(user);
+
             return user.toDTO();
         } else {
             // 유저가 존재하지 않을 때 예외처리
