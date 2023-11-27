@@ -42,7 +42,7 @@ public class SecurityConfig {
                 .cors()
                 .configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:8080")); // 허용할 오리진을 설정하세요
+                    corsConfig.setAllowedOrigins(List.of("https://kimgusxo.github.io/NovelIsland-FrontEnd/")); // 허용할 오리진을 설정하세요
                     corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 메소드를 설정하세요
                     corsConfig.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // 허용할 헤더를 설정하세요
                     corsConfig.addExposedHeader("Authorization");
