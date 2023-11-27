@@ -24,6 +24,7 @@ public class ElasticSearchConfig {
         return RestClients.create(clientConfiguration).rest();
     }
 
+
     @Bean
     public ElasticsearchRestTemplate elasticsearchTemplate() {
         return new ElasticsearchRestTemplate(client());
