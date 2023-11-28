@@ -20,6 +20,11 @@ public class ElasticSearchNovelController {
         this.elasticSearchNovelService = elasticSearchNovelService;
     }
 
+    @PostMapping("/create")
+    public void save() {
+        elasticSearchNovelService.save();
+    }
+
     @GetMapping("/find/result")
     public ResponseEntity<Message> getNovelsByNovelExplanation(@RequestParam("novelExplanation") String novelExplanation) {
         log.info("getNovelByNovelExplanation: {}", novelExplanation);

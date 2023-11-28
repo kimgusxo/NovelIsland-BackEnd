@@ -19,7 +19,7 @@ public class CsvReader {
                 = new FlatFileItemReader<>();
 
         // 읽어올 csv 파일의 경로
-        flatFileItemReader.setResource(new PathResource("C:/Users/lenovo/Desktop/NovelsHobby_데이터수집/통합본/네이버시리즈 통합1.csv"));
+        flatFileItemReader.setResource(new PathResource("C:/Users/lenovo/Desktop/NovelsHobby_데이터수집/Test/작가수정버전_통합.csv"));
         flatFileItemReader.setLinesToSkip(1);
         flatFileItemReader.setEncoding("UTF-8");
 
