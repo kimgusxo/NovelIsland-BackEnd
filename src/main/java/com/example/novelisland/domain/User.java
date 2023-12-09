@@ -23,7 +23,7 @@ public class User {
     private Long userIndex;
 
     @NotNull
-    @Column(name = "USER_ID")
+    @Column(name = "USER_ID", unique = true)
     private String userId;
 
     @NotNull

@@ -9,17 +9,25 @@ import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
 import com.example.novelisland.repository.UserRepository;
+import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.locks.ReentrantLock;
 
 @Service
 public class LoginService {
 
     private final UserRepository userRepository;
     private final JwtTokenProvider jwtTokenProvider;
+
+    // 멀티 쓰레드에 대해 Lock을 걸기 위하여 선언
+    private final Map<String, ReentrantLock> userLocks = new ConcurrentHashMap<>();
 
 
     @Autowired
@@ -36,34 +44,46 @@ public class LoginService {
         return token;
     }
 
-    @Transactional
     public TokenDTO signUp(LoginDTO loginDTO) {
 
-        Boolean token = userRepository.existsByUserId(loginDTO.getUserId());
+        // userId에 대한 락을 가져옴
+        ReentrantLock userLock = userLocks.computeIfAbsent(loginDTO.getUserId(), k -> new ReentrantLock());
 
-        if(token) {
-            // 아이디 중복 예외처리
-            throw new DuplicateIdException(ErrorCode.DUPLICATE_ID_TOKEN);
-        } else {
-            User user = User.builder()
-                    .userId(loginDTO.getUserId())
-                    .userPassword(loginDTO.getUserPassword())
-                    .build();
+        // userId에 대한 락을 설정
+        userLock.lock();
 
-            String jwtToken = jwtTokenProvider.createToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
-            String refreshJwtToken = jwtTokenProvider.createRefreshToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+        try {
+            // userId가 이미 존재하는지 확인
+            Boolean token = userRepository.existsByUserId(loginDTO.getUserId());
 
-            user.setRefreshToken(refreshJwtToken);
+            if (token) {
+                // 이미 userId가 존재하면 예외를 던지거나 해당 상황을 처리
+                throw new DuplicateIdException(ErrorCode.DUPLICATE_ID_TOKEN);
+            } else {
+                // userId가 존재하지 않으면 가입 프로세스 진행
+                User user = User.builder()
+                        .userId(loginDTO.getUserId())
+                        .userPassword(loginDTO.getUserPassword())
+                        .build();
 
-            userRepository.save(user);
+                String jwtToken = jwtTokenProvider.createToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
+                String refreshJwtToken = jwtTokenProvider.createRefreshToken(user.getUserId(), Collections.singletonList("ROLE_USER"));
 
-            return TokenDTO.builder()
-                    .userIndex(user.getUserIndex())
-                    .userId(user.getUserId())
-                    .userPassword(user.getUserPassword())
-                    .jwtToken(jwtToken)
-                    .refreshJwtToken(refreshJwtToken)
-                    .build();
+                user.setRefreshToken(refreshJwtToken);
+
+                userRepository.save(user);
+
+                return TokenDTO.builder()
+                        .userIndex(user.getUserIndex())
+                        .userId(user.getUserId())
+                        .userPassword(user.getUserPassword())
+                        .jwtToken(jwtToken)
+                        .refreshJwtToken(refreshJwtToken)
+                        .build();
+            }
+        } finally {
+            // userId에 대한 락을 해제
+            userLock.unlock();
         }
     }
 

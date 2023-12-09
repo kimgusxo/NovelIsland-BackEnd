@@ -12,6 +12,8 @@
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;
 //
+//import java.util.concurrent.*;
+//
 //import static org.assertj.core.api.Assertions.assertThat;
 //
 //@Slf4j
@@ -166,6 +168,87 @@
 //        System.out.println(errorMessage.getMessage());
 //
 //        log.info("잘못된 비밀번호로 로그인 테스트 종료");
+//    }
+//
+//    @Test
+//    @DisplayName("동시 사용자로 회원가입 테스트")
+//    void testSignUp_동시사용자() throws InterruptedException, ExecutionException {
+//        log.info("동시 사용자로 회원가입 테스트 시작");
+//
+//        LoginDTO loginDTO1 = new LoginDTO("test106", "password123");
+//        LoginDTO loginDTO2 = new LoginDTO("test106", "password456");
+//        LoginDTO loginDTO3 = new LoginDTO("test106", "password123");
+//        LoginDTO loginDTO4 = new LoginDTO("test106", "password456");
+//        LoginDTO loginDTO5 = new LoginDTO("test106", "password123");
+//        LoginDTO loginDTO6 = new LoginDTO("test106", "password456");
+//
+//        ExecutorService executorService = Executors.newFixedThreadPool(6);
+//
+//        // Callable을 사용하여 각각의 회원가입 요청을 별도의 스레드에서 실행
+//        Callable<ResponseEntity<Message>> signUpTask1 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO1,
+//                Message.class
+//        );
+//
+//        Callable<ResponseEntity<Message>> signUpTask2 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO2,
+//                Message.class
+//        );
+//        Callable<ResponseEntity<Message>> signUpTask3 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO3,
+//                Message.class
+//        );
+//
+//        Callable<ResponseEntity<Message>> signUpTask4 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO4,
+//                Message.class
+//        );
+//
+//        Callable<ResponseEntity<Message>> signUpTask5 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO5,
+//                Message.class
+//        );
+//
+//        Callable<ResponseEntity<Message>> signUpTask6 = () -> restTemplate.postForEntity(
+//                createURLWithPort("/login/signUp"),
+//                loginDTO6,
+//                Message.class
+//        );
+//
+//
+//        // 동시에 실행하고 결과를 기다림
+//        Future<ResponseEntity<Message>> future1 = executorService.submit(signUpTask1);
+//        Future<ResponseEntity<Message>> future2 = executorService.submit(signUpTask2);
+//        Future<ResponseEntity<Message>> future3 = executorService.submit(signUpTask3);
+//        Future<ResponseEntity<Message>> future4 = executorService.submit(signUpTask4);
+//        Future<ResponseEntity<Message>> future5 = executorService.submit(signUpTask5);
+//        Future<ResponseEntity<Message>> future6 = executorService.submit(signUpTask6);
+//
+//        // 결과를 가져옴
+//        ResponseEntity<Message> response1 = future1.get();
+//        ResponseEntity<Message> response2 = future2.get();
+//        ResponseEntity<Message> response3 = future3.get();
+//        ResponseEntity<Message> response4 = future4.get();
+//        ResponseEntity<Message> response5 = future5.get();
+//        ResponseEntity<Message> response6 = future6.get();
+//
+//        // 테스트 코드 작성
+//        assertThat(response1.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response3.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response4.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response5.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response6.getStatusCode()).isEqualTo(HttpStatus.OK);
+//
+//        // 나머지 테스트 코드 작성...
+//        executorService.shutdown();
+//
+//        log.info("동시 사용자로 회원가입 테스트 종료");
 //    }
 //
 //    private String createURLWithPort(String uri) {
