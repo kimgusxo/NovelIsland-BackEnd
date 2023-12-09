@@ -4,6 +4,7 @@ import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.exception.author.NotExistAuthorException;
 import com.example.novelisland.exception.bookmark.AlreadyExistBookMarkException;
 import com.example.novelisland.exception.bookmark.NotExistBookMarkException;
+import com.example.novelisland.exception.login.ConcurrentlySignUpException;
 import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
@@ -19,6 +20,11 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
+
+    @ExceptionHandler(ConcurrentlySignUpException.class)
+    public ResponseEntity<ErrorMessage> handleConcurrentlySignUpException() {
+        return new ResponseEntity<>(ErrorMessage.of(ErrorCode.CONCURRENTLY_SIGNUP_TOKEN), HttpStatus.CONFLICT);
+    }
 
     @ExceptionHandler(DuplicateIdException.class)
     public ResponseEntity<ErrorMessage> handleDuplicatedIdException() {

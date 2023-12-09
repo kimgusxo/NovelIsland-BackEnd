@@ -14,8 +14,8 @@ public enum ErrorCode {
     // 300번대: 완전한 처리를 위해선 추가 동작이 필요한 경우, 리다이렉션
 
     // 400번대: 잘못된 요청이 들어온 경우, 클라이언트 에러
-
     TIMEOUT_JWT_TOKEN(HttpStatus.UNAUTHORIZED, "JWT가 만료되었습니다."),
+    CONCURRENTLY_SIGNUP_TOKEN(HttpStatus.CONFLICT, "동시에 회원가입 할 수 없습니다."),
     DUPLICATE_ID_TOKEN(HttpStatus.BAD_REQUEST, "이미 아이디가 존재합니다."),
     INVALID_ID_TOKEN(HttpStatus.BAD_REQUEST, "아이디가 잘못되었습니다."),
     INVALID_PASSWORD_TOKEN(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),

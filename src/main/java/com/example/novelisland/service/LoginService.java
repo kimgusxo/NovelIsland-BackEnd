@@ -5,6 +5,7 @@ import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.LoginDTO;
 import com.example.novelisland.dto.TokenDTO;
+import com.example.novelisland.exception.login.ConcurrentlySignUpException;
 import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
@@ -38,19 +39,21 @@ public class LoginService {
 
     @Transactional
     public Boolean duplicateCheck(String userId) {
-
         Boolean token = userRepository.existsByUserId(userId);
-
         return token;
     }
 
+    @Transactional
     public TokenDTO signUp(LoginDTO loginDTO) {
 
         // userId에 대한 락을 가져옴
         ReentrantLock userLock = userLocks.computeIfAbsent(loginDTO.getUserId(), k -> new ReentrantLock());
 
-        // userId에 대한 락을 설정
-        userLock.lock();
+        // userId에 대한 락을 시도
+        if (!userLock.tryLock()) {
+            // 이미 다른 쓰레드에서 lock이 걸려 있다면 예외를 던짐
+            throw new ConcurrentlySignUpException(ErrorCode.CONCURRENTLY_SIGNUP_TOKEN);
+        }
 
         try {
             // userId가 이미 존재하는지 확인

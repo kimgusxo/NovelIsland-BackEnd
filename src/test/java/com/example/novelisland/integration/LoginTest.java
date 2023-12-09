@@ -242,8 +242,8 @@
 //        assertThat(response2.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response3.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response4.getStatusCode()).isEqualTo(HttpStatus.OK);
-//        assertThat(response5.getStatusCode()).isEqualTo(HttpStatus.OK);
 //        assertThat(response6.getStatusCode()).isEqualTo(HttpStatus.OK);
+//        assertThat(response5.getStatusCode()).isEqualTo(HttpStatus.OK);
 //
 //        // 나머지 테스트 코드 작성...
 //        executorService.shutdown();
