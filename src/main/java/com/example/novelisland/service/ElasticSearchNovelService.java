@@ -30,21 +30,6 @@ public class ElasticSearchNovelService {
     }
 
     @Transactional
-    public void save() {
-        List<Novel> novelList = novelRepository.findAll();
-
-        for(Novel n : novelList) {
-            ElasticSearchNovel elasticSearchNovel = ElasticSearchNovel.builder()
-                    .novelId(n.getNovelId())
-                    .novelName(n.getNovelName())
-                    .novelExplanation(n.getNovelExplanation())
-                    .build();
-            elasticSearchNovelRepository.save(elasticSearchNovel);
-            System.out.println(n.getNovelId());
-        }
-    }
-
-    @Transactional
     public List<NovelDTO> getElasticNovelsByNovelExplanation(String novelExplanation) {
 
         Pageable pageable = PageRequest.of(0, 9);

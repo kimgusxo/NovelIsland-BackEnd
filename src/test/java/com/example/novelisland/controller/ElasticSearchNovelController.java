@@ -2,6 +2,7 @@
 //
 //import com.example.novelisland.service.ElasticSearchNovelService;
 //import lombok.extern.slf4j.Slf4j;
+//import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,14 @@
 //
 //    @MockBean
 //    private ElasticSearchNovelService elasticSearchNovelService;
+//
+//   @BeforeEach
+//   void setUp() {
+//       log.info("");
+//
+//
+//       log.info("");
+//   }
 //
 //    @Test
 //    @DisplayName("문장형 검색어로 검색어와 유사한 소설 검색 테스트 성공")
