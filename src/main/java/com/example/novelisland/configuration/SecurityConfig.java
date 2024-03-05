@@ -43,8 +43,8 @@ public class SecurityConfig {
                 .configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
                     corsConfig.setAllowedOrigins(List.of("https://kimgusxo.github.io/", "https://kimgusxo.github.io/NovelIsland-FrontEnd/", "http://localhost:8080/")); // 허용할 오리진을 설정하세요
-                    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 허용할 메소드를 설정하세요
-                    corsConfig.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization")); // 허용할 헤더를 설정하세요
+                    corsConfig.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+                    corsConfig.setAllowedHeaders(Arrays.asList("Content-Type", "Authorization"));
                     corsConfig.addExposedHeader("Authorization");
                     return corsConfig;
                 }) // CORS 설정 추가

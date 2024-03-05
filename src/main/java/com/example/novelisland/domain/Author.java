@@ -3,9 +3,9 @@ package com.example.novelisland.domain;
 import com.example.novelisland.dto.AuthorDTO;
 import com.example.novelisland.dto.NovelDTO;
 import lombok.*;
+import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
