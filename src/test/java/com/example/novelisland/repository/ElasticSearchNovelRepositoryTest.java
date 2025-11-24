@@ -1,15 +1,22 @@
 //package com.example.novelisland.repository;
 //
+//import com.example.novelisland.configuration.ElasticSearchConfig;
 //import com.example.novelisland.document.ElasticSearchNovel;
 //import lombok.extern.slf4j.Slf4j;
 //import org.junit.jupiter.api.*;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.autoconfigure.data.elasticsearch.DataElasticsearchTest;
+//import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.data.domain.PageRequest;
 //import org.springframework.data.domain.Pageable;
 //import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 //import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
+//import org.springframework.test.context.ContextConfiguration;
+//import org.springframework.test.context.DynamicPropertyRegistry;
+//import org.springframework.test.context.DynamicPropertySource;
 //import org.testcontainers.elasticsearch.ElasticsearchContainer;
+//import org.testcontainers.junit.jupiter.Container;
+//import org.testcontainers.junit.jupiter.Testcontainers;
 //import org.testcontainers.utility.DockerImageName;
 //
 //import java.util.List;
@@ -17,13 +24,20 @@
 //import static org.assertj.core.api.Assertions.assertThat;
 //
 //@Slf4j
-//@DataElasticsearchTest
+//@ContextConfiguration(classes = {ElasticSearchConfig.class})
+//@SpringBootTest
+//@Testcontainers
 //public class ElasticSearchNovelRepositoryTest {
 //
+//    @Container
 //    private static final ElasticsearchContainer container
-//            = new ElasticsearchContainer(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:7.17.0"))
-//            .withExposedPorts(10000)
-//            .withEnv("discovery.type","single-node");  // 포트 노출 설정 추가;
+//            = new ElasticsearchContainer(DockerImageName.parse("docker.elastic.co/elasticsearch/elasticsearch:7.17.0"));
+//
+//    @DynamicPropertySource
+//    static void setProperties(DynamicPropertyRegistry registry) {
+//        registry.add("spring.data.elasticsearch.client.reactive.endpoints",
+//                () -> container.getHost() + ":" + container.getMappedPort(9200));
+//    }
 //
 //    private final ElasticsearchOperations operations;
 //    private final ElasticSearchNovelRepository elasticSearchNovelRepository;

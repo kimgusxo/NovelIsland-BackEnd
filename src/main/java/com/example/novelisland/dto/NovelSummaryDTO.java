@@ -1,8 +1,5 @@
 package com.example.novelisland.dto;
 
-import com.example.novelisland.domain.Author;
-import com.example.novelisland.domain.Novel;
-import com.example.novelisland.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

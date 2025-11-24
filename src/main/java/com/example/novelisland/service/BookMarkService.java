@@ -7,7 +7,6 @@ import com.example.novelisland.domain.User;
 import com.example.novelisland.dto.BookMarkDTO;
 import com.example.novelisland.exception.bookmark.AlreadyExistBookMarkException;
 import com.example.novelisland.exception.bookmark.NotExistBookMarkException;
-import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.BookMarkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;

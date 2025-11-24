@@ -2,7 +2,6 @@ package com.example.novelisland.controller;
 
 import com.example.novelisland.Jwt.JwtTokenProvider;
 import com.example.novelisland.domain.User;
-import com.example.novelisland.format.Message;
 import com.example.novelisland.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,5 @@
 package com.example.novelisland.configuration.batch;
 
-import com.example.novelisland.domain.Novel;
 import com.example.novelisland.vo.InsertDataVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.item.file.FlatFileItemReader;

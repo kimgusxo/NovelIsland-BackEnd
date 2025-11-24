@@ -2,11 +2,8 @@ package com.example.novelisland.service;
 
 import com.example.novelisland.description.ErrorCode;
 import com.example.novelisland.domain.Author;
-import com.example.novelisland.domain.Novel;
 import com.example.novelisland.dto.AuthorDTO;
-import com.example.novelisland.dto.NovelDTO;
 import com.example.novelisland.exception.author.NotExistAuthorException;
-import com.example.novelisland.exception.novel.NotExistNovelException;
 import com.example.novelisland.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

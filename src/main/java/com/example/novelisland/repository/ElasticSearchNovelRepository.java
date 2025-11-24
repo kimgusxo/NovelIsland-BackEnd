@@ -13,5 +13,4 @@ import java.util.List;
 public interface ElasticSearchNovelRepository extends ElasticsearchRepository<ElasticSearchNovel, Long> {
     @Query("{\"multi_match\": {\"query\": \"?0\", \"fields\": [\"novel_name\", \"novel_explanation\"]}}")
     List<ElasticSearchNovel> findElasticNovelsByNovelExplanation(@Param("novel_explanation") String novelExplanation, Pageable pageable);
-
 }

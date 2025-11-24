@@ -26,4 +26,10 @@ public class ElasticSearchNovelController {
         return new ResponseEntity<>(Message.of("소설 검색 성공", HttpStatus.OK.value(),
                 elasticSearchNovelService.getElasticNovelsByNovelExplanation(novelExplanation)), HttpStatus.OK);
     }
+
+    @PostMapping("/all")
+    public String insertAll() {
+        elasticSearchNovelService.insertAllNovels();
+        return "데이터 인덱싱 완료";
+    }
 }

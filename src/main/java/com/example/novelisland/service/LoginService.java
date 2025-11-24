@@ -10,10 +10,8 @@ import com.example.novelisland.exception.login.DuplicateIdException;
 import com.example.novelisland.exception.login.InvalidIdException;
 import com.example.novelisland.exception.login.InvalidPasswordException;
 import com.example.novelisland.repository.UserRepository;
-import org.postgresql.util.PSQLException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;

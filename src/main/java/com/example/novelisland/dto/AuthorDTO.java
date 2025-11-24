@@ -2,7 +2,6 @@ package com.example.novelisland.dto;
 
 import com.example.novelisland.domain.Author;
 import com.example.novelisland.domain.Novel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
