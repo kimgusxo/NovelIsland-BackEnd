@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/author")
+@RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
@@ -21,7 +21,7 @@ public class AuthorController {
         this.authorService = authorService;
     }
 
-    @GetMapping("/get/sorting")
+    @GetMapping
     @ApiOperation(value = "정렬된 작가 데이터 받아오기", notes = "작가를 이름으로 정렬하여 가져온다.")
     public ResponseEntity<Message> getSortingAuthor(@RequestParam("page") Integer page,
                                                     @RequestParam("size") Integer size) {
@@ -29,14 +29,14 @@ public class AuthorController {
         return new ResponseEntity<>(Message.of("정렬된 작가 가져오기 완료", HttpStatus.OK.value(), authorService.getSortingAuthor(page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/authorId")
+    @GetMapping("{authorId}")
     @ApiOperation(value = "아이디로 작가 검색", notes = "작가 아이디로 작가를 검색한다.")
-    public ResponseEntity<Message> getAuthorByAuthorId(@RequestParam("authorId") Long authorId) {
+    public ResponseEntity<Message> getAuthorByAuthorId(@PathVariable Long authorId) {
         log.info("getAuthorByAuthorId: {}", authorId);
         return new ResponseEntity<>(Message.of("작가 검색 성공", HttpStatus.OK.value(), authorService.getAuthorByAuthorId(authorId)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/authorName")
+    @GetMapping("/search")
     @ApiOperation(value = "이름으로 작가 검색", notes = "작가 이름으로 작가를 검색한다.")
     public ResponseEntity<Message> getAuthorByAuthorName(@RequestParam("authorName") String authorName,
                                                          @RequestParam("page") Integer page,
