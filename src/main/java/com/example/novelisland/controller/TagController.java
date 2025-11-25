@@ -7,14 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("/tags")
 public class TagController {
 
     private final TagService tagService;
@@ -24,24 +21,24 @@ public class TagController {
         this.tagService = tagService;
     }
 
-    @GetMapping("/get/sorting")
+    @GetMapping("/sorted")
     @ApiOperation(value = "정렬된 태그 리스트 검색", notes = "정렬된 태그 리스트를 검색한다.")
     public ResponseEntity<Message> getSortingTags() {
         log.info("getSortingTags");
         return new ResponseEntity<>(Message.of("소설 리스트 검색 성공", HttpStatus.OK.value(), tagService.getSortingTags()), HttpStatus.OK);
     }
 
-    @GetMapping("/find/tagId")
+    @GetMapping("/{tagId}")
     @ApiOperation(value = "태그 아이디로 태그 검색", notes = "태그 아이디로 해당 태그를 검색한다.")
-    public ResponseEntity<Message> getTagByTagId(@RequestParam("tagId") Long tagId) {
+    public ResponseEntity<Message> getTagByTagId(@PathVariable("tagId") Long tagId) {
         log.info("getTagByTagId: {}", tagId);
         return new ResponseEntity<>(Message.of("태그 검색 성공", HttpStatus.OK.value(),
                 tagService.getTagByTagId(tagId)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/tagId/novels")
+    @GetMapping("/{tagId}/novels")
     @ApiOperation(value = "태그 아이디로 소설검색", notes = "해당 태그의 소설 리스트를 검색한다.")
-    public ResponseEntity<Message> getNovelsByTagId(@RequestParam("tagId") Long tagId,
+    public ResponseEntity<Message> getNovelsByTagId(@PathVariable("tagId") Long tagId,
                                                   @RequestParam("page") Integer page,
                                                   @RequestParam("size") Integer size) {
         log.info("getNovelsTagId: {}", tagId);
@@ -49,7 +46,7 @@ public class TagController {
                tagService.getNovelsByTagId(tagId, page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/tagClassification/novels")
+    @GetMapping("/searched/novels")
     @ApiOperation(value = "태그 이름으로 소설검색", notes = "해당 태그의 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByTagClassification(@RequestParam("tagClassification") String tagClassification,
                                                                 @RequestParam("page") Integer page,

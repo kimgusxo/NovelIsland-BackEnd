@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/bookmark")
+@RequestMapping("/bookmarks")
 public class BookMarkController {
 
     private final BookMarkService bookMarkService;
@@ -21,9 +21,9 @@ public class BookMarkController {
         this.bookMarkService = bookMarkService;
     }
 
-    @GetMapping("/find/userIndex")
+    @GetMapping("/{userIndex}")
     @ApiOperation(value = "유저 인덱스로 북마크 리스트 검색", notes = "유저 인덱스로 해당 유저의 북마크된 소설리스트를 가져온다.")
-    public ResponseEntity<Message> getBookMarkListByUserIndex(@RequestParam("userIndex") Long userIndex,
+    public ResponseEntity<Message> getBookMarkListByUserIndex(@PathVariable("userIndex") Long userIndex,
                                                               @RequestParam("page") Integer page,
                                                               @RequestParam("size") Integer size) {
         log.info("getBookMarkListByUserIndex: {}", userIndex);
@@ -31,7 +31,7 @@ public class BookMarkController {
                 bookMarkService.getBookMarkListByUserIndex(userIndex, page, size)), HttpStatus.OK);
     }
 
-    @PostMapping("/create/userIndex/and/novelId")
+    @PostMapping
     @ApiOperation(value = "유저의 북마크 등록", notes = "유저 인덱스로 해당 유저의 북마크를 생성한다.")
     public ResponseEntity<Message> createBookMarkByUserIndex(@RequestParam("userIndex") Long userIndex,
                                                              @RequestParam("novelId") Long novelId) {
@@ -40,9 +40,9 @@ public class BookMarkController {
                 bookMarkService.createBookMarkByUserIndex(userIndex, novelId)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete/bookMarkId")
+    @DeleteMapping("/{bookMarkId}")
     @ApiOperation(value = "유저의 북마크 삭제", notes = "유저 인덱스로 해당 유저의 북마크를 해제한다")
-    public ResponseEntity<Message> deleteBookMarkByBookMarkId(@RequestParam("bookMarkId") Long bookMarkId) {
+    public ResponseEntity<Message> deleteBookMarkByBookMarkId(@PathVariable("bookMarkId") Long bookMarkId) {
         log.info("deleteBookMarkByBookMarkId: {}", bookMarkId);
         bookMarkService.deleteBookMarkByBookMarkId(bookMarkId);
         return new ResponseEntity<>(Message.of("북마크 해제 성공", HttpStatus.OK.value()), HttpStatus.OK);

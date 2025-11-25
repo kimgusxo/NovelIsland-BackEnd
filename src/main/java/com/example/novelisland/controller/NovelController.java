@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/novel")
+@RequestMapping("/novels")
 public class NovelController {
 
     private final NovelService novelService;
@@ -23,14 +23,14 @@ public class NovelController {
         this.novelService = novelService;
     }
 
-    @GetMapping("/get/random")
+    @GetMapping("/random")
     @ApiOperation(value = "랜덤 소설 데이터 받아오기", notes = "랜덤 소설을 가져온다.")
     public ResponseEntity<Message> getRandomNovels() {
         log.info("getRandomNovels");
         return new ResponseEntity<>(Message.of("랜덤 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRandomNovels()), HttpStatus.OK);
     }
 
-    @GetMapping("/get/ranking")
+    @GetMapping("/ranked")
     @ApiOperation(value = "인기순 소설 데이터 받아오기", notes = "소설을 인기순으로 가져온다.")
     public ResponseEntity<Message> getRankingNovels(@RequestParam("page") Integer page,
                                                     @RequestParam("size") Integer size) {
@@ -38,7 +38,7 @@ public class NovelController {
         return new ResponseEntity<>(Message.of("인기순 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getRankingNovels(page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/get/sorting")
+    @GetMapping("/sorted")
     @ApiOperation(value = "정렬된 소설 데이터 받아오기", notes = "소설을 이름으로 정렬하여 가져온다.")
     public ResponseEntity<Message> getSortingNovels(@RequestParam("page") Integer page,
                                                     @RequestParam("size") Integer size) {
@@ -46,21 +46,21 @@ public class NovelController {
         return new ResponseEntity<>(Message.of("정렬된 소설 가져오기 완료", HttpStatus.OK.value(), novelService.getSortingNovels(page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/novelId")
+    @GetMapping("/{novelId}")
     @ApiOperation(value = "아이디로 소설 검색", notes = "소설 아이디로 소설 1개를 검색한다.")
-    public ResponseEntity<Message> getNovelByNovelId(@RequestParam("novelId") Long novelId) {
+    public ResponseEntity<Message> getNovelByNovelId(@PathVariable("novelId") Long novelId) {
         log.info("getNovelByNovelId: {}", novelId);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelByNovelId(novelId)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/novelIdList")
+    @GetMapping
     @ApiOperation(value = "아이디 리스트로 소설 목록 검색", notes = "소설 아이디 리스트로 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByNovelIdList(@RequestParam("novelIdList") List<Long> novelIdList) {
         log.info("getNovelsByNovelIdList: {}", novelIdList);
         return new ResponseEntity<>(Message.of("소설 검색 완료", HttpStatus.OK.value(), novelService.getNovelsByNovelIdList(novelIdList)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/novelName")
+    @GetMapping("/novelName")
     @ApiOperation(value = "이름으로 소설 목록 검색", notes = "소설 이름으로 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByNovelName(@RequestParam("novelName") String novelName,
                                                         @RequestParam("page") Integer page,
@@ -70,9 +70,9 @@ public class NovelController {
                 novelService.getNovelsByNovelName(novelName, page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/authorId")
+    @GetMapping("/{authorId}")
     @ApiOperation(value = "작가 아이디로 작가의 소설 목록 검색", notes = "작가의 아이디로 작가의 소설 리스트를 검색한다.")
-    public ResponseEntity<Message> getNovelsByAuthorId(@RequestParam("authorId") Long authorId,
+    public ResponseEntity<Message> getNovelsByAuthorId(@PathVariable("authorId") Long authorId,
                                                         @RequestParam("page") Integer page,
                                                         @RequestParam("size") Integer size) {
         log.info("getNovelsByAuthorId: {}", authorId);
@@ -80,7 +80,7 @@ public class NovelController {
                 novelService.getNovelsByAuthorId(authorId, page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/find/novelName/and/tagId")
+    @GetMapping("/novelName/and/tagId")
     @ApiOperation(value = "이름과 장르들로 소설 목록 검색", notes = "소설 이름과 태그 리스트로 소설 리스트를 검색한다.")
     public ResponseEntity<Message> getNovelsByNovelNameContainingAndTagIdList(@RequestParam("novelName") String novelName,
                                                                               @RequestParam("tagIdList") List<Long> tagIdList,

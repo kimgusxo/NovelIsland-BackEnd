@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
 @Slf4j
-@RestController
+@RestController("/tokens")
 public class TokenController {
 
     private final JwtTokenProvider jwtTokenProvider;
@@ -24,7 +24,7 @@ public class TokenController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/token/refresh")
+    @GetMapping("/refresh")
     public ResponseEntity<?> refreshToken(@RequestParam("userId") String userId,
                                           @RequestParam("refreshToken") String refreshToken) {
         log.warn("refreshToken: {}", refreshToken);

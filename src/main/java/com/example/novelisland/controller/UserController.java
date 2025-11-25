@@ -14,7 +14,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -24,16 +24,16 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PutMapping("/update")
+    @PutMapping
     @ApiOperation(value = "유저정보 수정", notes = "유저의 정보를 수정한다.")
     public ResponseEntity<Message> updateUser(@RequestBody @Valid UserDTO userDTO) {
         log.info("updateUser: {}", userDTO);
         return new ResponseEntity<>(Message.of("회원정보 수정 완료", HttpStatus.OK.value(), userService.updateUser(userDTO)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{userIndex}")
     @ApiOperation(value = "유저정보 삭제", notes = "유저의 정보를 삭제한다.")
-    public ResponseEntity<Message> deleteUser(@RequestParam("userIndex") Long userIndex) {
+    public ResponseEntity<Message> deleteUser(@PathVariable("userIndex") Long userIndex) {
         log.info("deleteUser: {}", userIndex);
         userService.deleteUser(userIndex);
         return new ResponseEntity<>(Message.of("회원정보 삭제 완료", HttpStatus.OK.value()), HttpStatus.OK);

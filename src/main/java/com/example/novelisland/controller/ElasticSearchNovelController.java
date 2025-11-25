@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping("/elastic")
+@RequestMapping("/elastics")
 public class ElasticSearchNovelController {
 
     private final ElasticSearchNovelService elasticSearchNovelService;
@@ -20,7 +20,7 @@ public class ElasticSearchNovelController {
         this.elasticSearchNovelService = elasticSearchNovelService;
     }
 
-    @GetMapping("/find/result")
+    @GetMapping
     public ResponseEntity<Message> getNovelsByNovelExplanation(@RequestParam("novelExplanation") String novelExplanation) {
         log.info("getNovelByNovelExplanation: {}", novelExplanation);
         return new ResponseEntity<>(Message.of("소설 검색 성공", HttpStatus.OK.value(),
