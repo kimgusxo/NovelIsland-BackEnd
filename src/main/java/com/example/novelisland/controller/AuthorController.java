@@ -29,7 +29,7 @@ public class AuthorController {
         return new ResponseEntity<>(Message.of("정렬된 작가 가져오기 완료", HttpStatus.OK.value(), authorService.getSortingAuthor(page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("{authorId}")
+    @GetMapping("/{authorId}")
     @ApiOperation(value = "아이디로 작가 검색", notes = "작가 아이디로 작가를 검색한다.")
     public ResponseEntity<Message> getAuthorByAuthorId(@PathVariable Long authorId) {
         log.info("getAuthorByAuthorId: {}", authorId);
