@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collections;
 
 @Slf4j
-@RestController("/tokens")
+@RestController
+@RequestMapping("/tokens")
 public class TokenController {
 
     private final JwtTokenProvider jwtTokenProvider;

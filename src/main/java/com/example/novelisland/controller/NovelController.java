@@ -70,9 +70,9 @@ public class NovelController {
                 novelService.getNovelsByNovelName(novelName, page, size)), HttpStatus.OK);
     }
 
-    @GetMapping("/{authorId}")
+    @GetMapping("/authorId")
     @ApiOperation(value = "작가 아이디로 작가의 소설 목록 검색", notes = "작가의 아이디로 작가의 소설 리스트를 검색한다.")
-    public ResponseEntity<Message> getNovelsByAuthorId(@PathVariable("authorId") Long authorId,
+    public ResponseEntity<Message> getNovelsByAuthorId(@RequestParam("authorId") Long authorId,
                                                         @RequestParam("page") Integer page,
                                                         @RequestParam("size") Integer size) {
         log.info("getNovelsByAuthorId: {}", authorId);
