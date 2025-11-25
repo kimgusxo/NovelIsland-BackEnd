@@ -30,7 +30,7 @@ public class LoginController {
         return new ResponseEntity<>(Message.of("아이디 중복확인 성공", HttpStatus.OK.value(), loginService.duplicateCheck(userId)), HttpStatus.OK);
     }
 
-    @PostMapping("/users")
+    @PostMapping("/signUp")
     @ApiOperation(value = "회원가입", notes = "유저가 회원가입을 한다.")
     public ResponseEntity<Message> signUp(@RequestBody @Valid LoginDTO loginDTO) {
         log.info("signUp: {}", loginDTO);
