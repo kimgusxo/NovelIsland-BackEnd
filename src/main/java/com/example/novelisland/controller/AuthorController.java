@@ -36,7 +36,7 @@ public class AuthorController {
         return new ResponseEntity<>(Message.of("작가 검색 성공", HttpStatus.OK.value(), authorService.getAuthorByAuthorId(authorId)), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/authorName")
     @ApiOperation(value = "이름으로 작가 검색", notes = "작가 이름으로 작가를 검색한다.")
     public ResponseEntity<Message> getAuthorByAuthorName(@RequestParam("authorName") String authorName,
                                                          @RequestParam("page") Integer page,
