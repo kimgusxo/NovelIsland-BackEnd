@@ -8,11 +8,12 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface NovelRepository extends JpaRepository<Novel, Long> {
-    Boolean existsByNovelId(Long novelId);
-    Novel findByNovelId(Long novelId);
+    Optional<Novel> findByNovelId(Long novelId);
+
     List<Novel> findByNovelNameContaining(String novelName, Pageable pageable);
     List<Novel> findByAuthor_AuthorId(Long authorId, Pageable pageable);
 

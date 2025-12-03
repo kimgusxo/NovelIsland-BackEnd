@@ -9,14 +9,15 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Boolean existsByTagId(Long tagId);
-    Boolean existsByTagClassification(String tagClassification);
-    Tag findByTagId(Long tagId);
-    Tag findByTagClassification(String tagClassification);
+    boolean existsByTagClassification(String tagClassification);
+
+    Optional<Tag> findByTagId(Long tagId);
+    Optional<Tag> findByTagClassification(String tagClassification);
 
     @Query("select t.tagClassification as tagClassification, n.novelId as novelId, n.novelName as novelName, n.novelThumbNail as novelThumbNail, " +
             "n.novelExplanation as novelExplanation, a.authorName as authorName " +

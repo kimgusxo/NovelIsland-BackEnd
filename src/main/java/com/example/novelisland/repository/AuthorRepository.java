@@ -6,13 +6,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
 
-    Boolean existsByAuthorId(Long authorId);
-    Boolean existsByAuthorName(String authorName);
-    Author findByAuthorId(Long authorId);
-    Author findByAuthorName(String authorName);
+    boolean existsByAuthorName(String authorName);
+
+    Optional<Author> findByAuthorId(Long authorId);
+    Optional<Author> findByAuthorName(String authorName);
+
     List<Author> findByAuthorNameContaining(String authorName, Pageable pageable);
 }
